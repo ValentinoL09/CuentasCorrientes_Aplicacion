@@ -34,7 +34,7 @@
             <HBox spacing="10.0" alignment="CENTER_LEFT">
                 <Label text="Monto a Pagar:"/>
                 <TextField fx:id="txtMontoPagar" promptText="Ingrese monto"/>
-                <Button fx:id="btnRegistrarPago" text="Registrar Pago" style="-fx-font-size: 14px;"/>
+                <Button fx:id="btnRegistrarPago" text="Registrar Pago" style="-fx-font-size: 14px;" onAction="#registrarPago"/>
             </HBox>
         </VBox>
     </children>
