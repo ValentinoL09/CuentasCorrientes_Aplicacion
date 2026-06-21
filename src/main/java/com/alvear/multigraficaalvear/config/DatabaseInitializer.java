@@ -65,6 +65,17 @@ public class DatabaseInitializer {
                     ")";
             stmt.execute(createServiciosTable);
 
+            String createDetalleVentasTable = "CREATE TABLE IF NOT EXISTS detalle_ventas (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "venta_id INTEGER NOT NULL," +
+                    "servicio_id INTEGER NOT NULL," +
+                    "cantidad INTEGER NOT NULL," +
+                    "precio_unitario REAL NOT NULL," +
+                    "FOREIGN KEY (venta_id) REFERENCES ventas(id) ON DELETE CASCADE," +
+                    "FOREIGN KEY (servicio_id) REFERENCES servicios(id)" +
+                    ")";
+            stmt.execute(createDetalleVentasTable);
+
         } catch (SQLException e) {
             System.err.println("Error al inicializar la base de datos: " + e.getMessage());
         }
