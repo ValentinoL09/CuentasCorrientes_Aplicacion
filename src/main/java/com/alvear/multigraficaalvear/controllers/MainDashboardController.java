@@ -30,6 +30,11 @@ public class MainDashboardController {
     }
 
     @FXML
+    private void mostrarServicios() {
+        cargarVista("/com/alvear/multigraficaalvear/views/ServiciosView.fxml");
+    }
+
+    @FXML
     private void cerrarSesion() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/alvear/multigraficaalvear/views/LoginView.fxml"));
