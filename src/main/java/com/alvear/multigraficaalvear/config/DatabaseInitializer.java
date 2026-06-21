@@ -57,6 +57,14 @@ public class DatabaseInitializer {
                     ")";
             stmt.execute(createAuditoriaTable);
 
+            String createServiciosTable = "CREATE TABLE IF NOT EXISTS servicios (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "nombre TEXT NOT NULL," +
+                    "categoria TEXT," +
+                    "precio_sugerido REAL" +
+                    ")";
+            stmt.execute(createServiciosTable);
+
         } catch (SQLException e) {
             System.err.println("Error al inicializar la base de datos: " + e.getMessage());
         }
