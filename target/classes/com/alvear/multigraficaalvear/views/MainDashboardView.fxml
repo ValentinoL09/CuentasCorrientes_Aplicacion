@@ -19,6 +19,6 @@
         </VBox>
     </left>
     <center>
-        <StackPane fx:id="contentArea" />
+        <BorderPane fx:id="contentArea" />
     </center>
 </BorderPane>

@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.io.IOException;
 public class MainDashboardController {
 
     @FXML
-    private StackPane contentArea;
+    private BorderPane contentArea;
 
     @FXML
     private void mostrarClientes() {
@@ -48,11 +48,9 @@ public class MainDashboardController {
 
     private void cargarVista(String rutaFxml) {
         try {
-            contentArea.getChildren().clear();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(rutaFxml));
-            Parent vista = loader.load();
-            contentArea.getChildren().add(vista);
-        } catch (IOException e) {
+            javafx.scene.Node vista = FXMLLoader.load(getClass().getResource(rutaFxml));
+            contentArea.setCenter(vista);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
