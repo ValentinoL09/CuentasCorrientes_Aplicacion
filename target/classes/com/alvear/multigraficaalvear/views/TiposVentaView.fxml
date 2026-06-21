@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.alvear.multigraficaalvear.controllers.TiposVentaController">
+    <children>
+        <VBox spacing="10.0" AnchorPane.topAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.bottomAnchor="10.0">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            
+            <Label text="Gestion de Tipos de Venta" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+            
+            <HBox spacing="10.0" alignment="CENTER_LEFT">
+                <Label text="Nombre:"/>
+                <TextField fx:id="txtNombre" promptText="Ingrese nombre de la categoria"/>
+            </HBox>
+            
+            <HBox spacing="10.0" alignment="CENTER_LEFT">
+                <Button fx:id="btnGuardar" text="Guardar" />
+                <Button fx:id="btnModificar" text="Modificar" />
+                <Button fx:id="btnEliminar" text="Eliminar" />
+            </HBox>
+            
+            <TableView fx:id="tblTiposVenta" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colId" text="ID" prefWidth="80"/>
+                    <TableColumn fx:id="colNombre" text="Nombre" prefWidth="300"/>
+                </columns>
+            </TableView>
+        </VBox>
+    </children>
+</AnchorPane>
