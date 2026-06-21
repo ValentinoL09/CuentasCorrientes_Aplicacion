@@ -14,7 +14,7 @@ public class MainApp extends Application {
         try {
             DatabaseInitializer.initializeDatabase();
 
-            Parent root = FXMLLoader.load(getClass().getResource("/com/alvear/multigraficaalvear/views/CuentasCorrientesView.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/com/alvear/multigraficaalvear/views/LoginView.fxml"));
 
             Scene scene = new Scene(root);
             primaryStage.setTitle("Multigrafica Alvear - Modulo Ventas");
