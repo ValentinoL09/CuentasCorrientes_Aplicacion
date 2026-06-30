@@ -19,9 +19,9 @@ public class VentaDAO {
         this.connection = DatabaseConnection.getInstance().getConnection();
     }
 
-    public void insertar(Venta venta) {
+    public int insertar(Venta venta) {
         String sql = "INSERT INTO ventas (cliente_id, tipo_venta_id, descripcion, monto_total, monto_recibido, fecha) VALUES (?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (PreparedStatement stmt = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, venta.getClienteId());
             stmt.setInt(2, venta.getTipoVentaId());
             stmt.setString(3, venta.getDescripcion());
@@ -29,9 +29,14 @@ public class VentaDAO {
             stmt.setDouble(5, venta.getMontoRecibido());
             stmt.setString(6, venta.getFecha().toString());
             stmt.executeUpdate();
+            ResultSet rs = stmt.getGeneratedKeys();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return -1;
     }
 
     public List<Venta> obtenerTodas() {
