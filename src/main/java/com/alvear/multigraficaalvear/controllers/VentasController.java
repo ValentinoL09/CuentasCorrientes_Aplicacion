@@ -57,7 +57,7 @@ public class VentasController implements Initializable {
         colServicio.setCellValueFactory(new PropertyValueFactory<>("nombreServicio"));
         colCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
         colPrecioUnitario.setCellValueFactory(new PropertyValueFactory<>("precioUnitario"));
-        colSubtotal.setCellValueFactory(new PropertyValueFactory<>("precioUnitario"));
+        colSubtotal.setCellValueFactory(new PropertyValueFactory<>("subtotal"));
 
         cargarClientes();
         cargarTipoVenta();

@@ -74,4 +74,8 @@ public class DetalleVenta {
     public void setNombreServicio(String nombreServicio) {
         this.nombreServicio = nombreServicio;
     }
+
+    public double getSubtotal() {
+        return this.cantidad * this.precioUnitario;
+    }
 }
