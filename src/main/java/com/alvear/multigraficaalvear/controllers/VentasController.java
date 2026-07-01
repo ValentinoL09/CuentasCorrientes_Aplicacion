@@ -82,14 +82,47 @@ public class VentasController implements Initializable {
 
     @FXML
     private void agregarAlCarrito() {
+        if (txtCantidad.getText().trim().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Error de Validación");
+            alert.setHeaderText(null);
+            alert.setContentText("El campo Cantidad es obligatorio.");
+            alert.showAndWait();
+            return;
+        }
+        if (txtPrecio.getText().trim().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Error de Validación");
+            alert.setHeaderText(null);
+            alert.setContentText("El campo Precio es obligatorio.");
+            alert.showAndWait();
+            return;
+        }
+
         Servicio s = cmbServicios.getValue();
         if (s == null) { mostrarAlerta("Seleccione un servicio."); return; }
-        int cantidad; double precio;
+
+        int cantidad;
+        double precio;
         try {
-            cantidad = Integer.parseInt(txtCantidad.getText());
-            precio = Double.parseDouble(txtPrecio.getText());
+            cantidad = Integer.parseInt(txtCantidad.getText().trim());
         } catch (NumberFormatException e) {
-            mostrarAlerta("Cantidad y precio deben ser numericos."); return;
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Error de Validación");
+            alert.setHeaderText(null);
+            alert.setContentText("El formato de la cantidad es incorrecto. Ingrese solo números enteros.");
+            alert.showAndWait();
+            return;
+        }
+        try {
+            precio = Double.parseDouble(txtPrecio.getText().trim());
+        } catch (NumberFormatException e) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Error de Validación");
+            alert.setHeaderText(null);
+            alert.setContentText("El formato del precio es incorrecto. Ingrese solo números.");
+            alert.showAndWait();
+            return;
         }
 
         DetalleVenta d = new DetalleVenta();
@@ -116,16 +149,38 @@ public class VentasController implements Initializable {
     @FXML
     private void finalizarVenta() {
         if (cmbCliente.getValue() == null || cmbTipoVenta.getValue() == null) {
-            mostrarAlerta("Seleccione cliente y tipo de venta."); return;
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Error de Validación");
+            alert.setHeaderText(null);
+            alert.setContentText("Por favor, seleccione un cliente y un tipo de venta.");
+            alert.showAndWait();
+            return;
         }
-        if (carrito.isEmpty()) { mostrarAlerta("El carrito esta vacio."); return; }
+        if (carrito.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Error de Validación");
+            alert.setHeaderText(null);
+            alert.setContentText("El carrito de ventas está vacío.");
+            alert.showAndWait();
+            return;
+        }
 
         double total = carrito.stream().mapToDouble(d -> d.getCantidad() * d.getPrecioUnitario()).sum();
         double montoRecibido;
         try {
-            montoRecibido = txtMontoRecibido.getText().isEmpty() ? 0.0 : Double.parseDouble(txtMontoRecibido.getText());
+            String textoMonto = txtMontoRecibido.getText().trim();
+            if (textoMonto.isEmpty()) {
+                montoRecibido = 0.0;
+            } else {
+                montoRecibido = Double.parseDouble(textoMonto);
+            }
         } catch (NumberFormatException e) {
-            mostrarAlerta("Monto recibido invalido."); return;
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Error de Validación");
+            alert.setHeaderText(null);
+            alert.setContentText("El formato del monto recibido es incorrecto. Ingrese solo números.");
+            alert.showAndWait();
+            return;
         }
 
         Venta v = new Venta();
@@ -137,7 +192,14 @@ public class VentasController implements Initializable {
         v.setFecha(LocalDate.now());
 
         int idVenta = ventaDAO.insertar(v);
-        if (idVenta == -1) { mostrarAlerta("Error al registrar la venta."); return; }
+        if (idVenta == -1) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error de Base de Datos");
+            alert.setHeaderText(null);
+            alert.setContentText("Hubo un error al registrar la venta. Intente nuevamente.");
+            alert.showAndWait();
+            return;
+        }
 
         for (DetalleVenta d : carrito) {
             d.setVentaId(idVenta);
@@ -155,7 +217,12 @@ public class VentasController implements Initializable {
         cmbCliente.getSelectionModel().clearSelection();
         cmbTipoVenta.getSelectionModel().clearSelection();
         txtMontoRecibido.clear();
-        mostrarAlerta("Venta finalizada correctamente.");
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Éxito");
+        alert.setHeaderText(null);
+        alert.setContentText("Venta finalizada correctamente.");
+        alert.showAndWait();
     }
 
     private void mostrarAlerta(String mensaje) {
