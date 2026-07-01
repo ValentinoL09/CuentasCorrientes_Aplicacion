@@ -9,11 +9,23 @@ import java.sql.SQLException;
 
 public class CajaDAO {
 
+    // --- INICIO DEL SINGLETON ---
+    private static CajaDAO instance;
     private final Connection connection;
 
-    public CajaDAO() {
+    // El constructor ahora es privado
+    private CajaDAO() {
         this.connection = DatabaseConnection.getInstance().getConnection();
     }
+
+    // El método que el controlador estaba buscando a gritos
+    public static CajaDAO getInstance() {
+        if (instance == null) {
+            instance = new CajaDAO();
+        }
+        return instance;
+    }
+    // --- FIN DEL SINGLETON ---
 
     public double obtenerVentasContadoDelDia(String fecha) {
         String sql = "SELECT SUM(monto_recibido) FROM ventas WHERE fecha = ?";

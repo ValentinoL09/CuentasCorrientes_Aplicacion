@@ -35,6 +35,11 @@ public class MainDashboardController {
     }
 
     @FXML
+    private void mostrarCajaDiaria() {
+        cargarVista("/com/alvear/multigraficaalvear/views/CajaDiariaView.fxml");
+    }
+
+    @FXML
     private void cerrarSesion() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/alvear/multigraficaalvear/views/LoginView.fxml"));

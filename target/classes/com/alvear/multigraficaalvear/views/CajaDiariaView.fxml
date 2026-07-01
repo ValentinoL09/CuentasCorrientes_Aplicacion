@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.alvear.multigraficaalvear.controllers.CajaDiariaController" alignment="CENTER" spacing="20" style="-fx-padding: 30;">
+    <Label text="Cierre de Caja Diaria" style="-fx-font-size: 24; -fx-font-weight: bold;"/>
+
+    <DatePicker fx:id="dpFecha"/>
+
+    <Separator/>
+
+    <Label text="Ventas al Contado" style="-fx-font-size: 14;"/>
+    <Label fx:id="lblVentasContado" text="0.00" style="-fx-font-size: 28; -fx-font-weight: bold;"/>
+
+    <Label text="Cobros de Cuentas Corrientes" style="-fx-font-size: 14;"/>
+    <Label fx:id="lblCobrosCuentas" text="0.00" style="-fx-font-size: 28; -fx-font-weight: bold;"/>
+
+    <Separator/>
+
+    <Label text="Total en Caja" style="-fx-font-size: 14;"/>
+    <Label fx:id="lblTotalCaja" text="0.00" style="-fx-font-size: 36; -fx-font-weight: bold; -fx-text-fill: red;"/>
+</VBox>
+
