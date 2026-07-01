@@ -48,6 +48,7 @@
             <Label text="Monto Recibido:"/>
             <TextField fx:id="txtMontoRecibido" promptText="0.00" prefWidth="120"/>
             <Button fx:id="btnFinalizar" text="Finalizar Venta" onAction="#finalizarVenta" style="-fx-font-size: 14px; -fx-padding: 10px 20px;"/>
+            <Button fx:id="btnLimpiar" text="Limpiar Formulario" onAction="#limpiarFormulario" style="-fx-font-size: 14px; -fx-padding: 10px 20px;"/>
         </HBox>
     </VBox>
 </VBox>

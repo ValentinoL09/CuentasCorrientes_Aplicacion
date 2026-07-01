@@ -147,6 +147,19 @@ public class VentasController implements Initializable {
     }
 
     @FXML
+    private void limpiarFormulario() {
+        txtCantidad.clear();
+        txtPrecio.clear();
+        txtMontoRecibido.clear();
+        cmbCliente.getSelectionModel().clearSelection();
+        cmbTipoVenta.getSelectionModel().clearSelection();
+        cmbServicios.getSelectionModel().clearSelection();
+        carrito.clear();
+        tblCarrito.getItems().clear();
+        lblTotal.setText("Total: $0.00");
+    }
+
+    @FXML
     private void finalizarVenta() {
         if (cmbCliente.getValue() == null || cmbTipoVenta.getValue() == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
