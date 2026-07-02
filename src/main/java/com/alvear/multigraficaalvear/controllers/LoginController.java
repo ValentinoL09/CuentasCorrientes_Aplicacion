@@ -38,7 +38,7 @@ public class LoginController {
                 stage.setScene(new Scene(root));
                 stage.show();
 
-                Stage currentStage = (Stage) btnIngresar.getScene().getWindow();
+                Stage currentStage = (Stage) txtUsuario.getScene().getWindow();
                 currentStage.close();
             } catch (IOException e) {
                 e.printStackTrace();

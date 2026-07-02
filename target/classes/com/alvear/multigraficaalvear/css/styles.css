@@ -41,3 +41,44 @@
     -fx-font-size: 22px;
     -fx-font-weight: bold;
 }
+
+/* El contenedor de la barra lateral */
+.sidebar {
+    -fx-background-color: #13131a; /* Un tono más oscuro que el fondo general para dar contraste */
+    -fx-padding: 25 15 25 15;
+}
+
+/* Botones del menú lateral */
+.btn-menu {
+    -fx-background-color: transparent;
+    -fx-text-fill: #a0a0b0;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-alignment: center-left; /* Alinea el contenido a la izquierda */
+    -fx-graphic-text-gap: 15;   /* Separa el ícono del texto */
+    -fx-padding: 12 15 12 15;
+}
+
+/* Efecto cuando pasás el mouse por encima de los botones del menú */
+.btn-menu:hover {
+    -fx-text-fill: #8a2be2; /* Cambia el texto al violeta de tus íconos */
+    -fx-background-color: #1e1e24; /* Resalta el fondo sutilmente */
+    -fx-background-radius: 8;
+}
+
+/* Botón de Cerrar Sesión (Naranja abajo de todo) */
+.btn-cerrar-sesion {
+    -fx-background-color: #ff8c00;
+    -fx-text-fill: #13131a;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-graphic-text-gap: 10;
+    -fx-padding: 10 20 10 20;
+}
+
+.btn-cerrar-sesion:hover {
+    -fx-background-color: #ffa533;
+}
