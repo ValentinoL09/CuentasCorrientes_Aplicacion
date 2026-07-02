@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.alvear.multigraficaalvear.controllers.CajaDiariaController" alignment="CENTER" spacing="20" style="-fx-padding: 30;">
     <Label text="Cierre de Caja Diaria" style="-fx-font-size: 24; -fx-font-weight: bold;"/>
 
-    <DatePicker fx:id="dpFecha"/>
+    <HBox spacing="10" alignment="CENTER">
+        <DatePicker fx:id="dpFechaInicio" promptText="Desde"/>
+        <DatePicker fx:id="dpFechaFin" promptText="Hasta"/>
+    </HBox>
+
+    <Button text="Calcular" onAction="#calcularCajaDesdeBoton" style="-fx-font-size: 14; -fx-padding: 10 20;"/>
 
     <Separator/>
 
@@ -21,5 +28,6 @@
 
     <Label text="Total en Caja" style="-fx-font-size: 14;"/>
     <Label fx:id="lblTotalCaja" text="0.00" style="-fx-font-size: 36; -fx-font-weight: bold; -fx-text-fill: red;"/>
-</VBox>
 
+    <Button text="Exportar a PDF" onAction="#exportarPDF" style="-fx-font-size: 14; -fx-padding: 10 20;"/>
+</VBox>
