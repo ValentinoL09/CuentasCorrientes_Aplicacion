@@ -13,7 +13,7 @@
         <VBox spacing="15.0" styleClass="sidebar" stylesheets="@../css/styles.css" prefWidth="240.0" alignment="TOP_CENTER">
             <children>
 
-                <Button maxWidth="Infinity" onAction="#mostrarServicios" styleClass="btn-menu" text="Servicios">
+                <Button fx:id="btnServicios" maxWidth="Infinity" onAction="#mostrarServicios" styleClass="btn-menu" text="Servicios">
                     <graphic>
                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" smooth="true">
                             <image>
@@ -23,7 +23,7 @@
                     </graphic>
                 </Button>
 
-                <Button maxWidth="Infinity" onAction="#mostrarClientes" styleClass="btn-menu" text="Clientes">
+                <Button fx:id="btnClientes" maxWidth="Infinity" onAction="#mostrarClientes" styleClass="btn-menu" text="Clientes">
                     <graphic>
                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" smooth="true">
                             <image>
@@ -33,7 +33,7 @@
                     </graphic>
                 </Button>
 
-                <Button maxWidth="Infinity" onAction="#mostrarVentas" styleClass="btn-menu" text="Ventas">
+                <Button fx:id="btnVentas" maxWidth="Infinity" onAction="#mostrarVentas" styleClass="btn-menu" text="Ventas">
                     <graphic>
                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" smooth="true">
                             <image>
@@ -43,7 +43,7 @@
                     </graphic>
                 </Button>
 
-                <Button maxWidth="Infinity" onAction="#mostrarCuentasCorrientes" styleClass="btn-menu" text="Cuentas Corrientes">
+                <Button fx:id="btnCuentas" maxWidth="Infinity" onAction="#mostrarCuentasCorrientes" styleClass="btn-menu" text="Cuentas Corrientes">
                     <graphic>
                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" smooth="true">
                             <image>
@@ -53,7 +53,7 @@
                     </graphic>
                 </Button>
 
-                <Button maxWidth="Infinity" onAction="#mostrarCajaDiaria" styleClass="btn-menu" text="Caja Diaria">
+                <Button fx:id="btnCaja" maxWidth="Infinity" onAction="#mostrarCajaDiaria" styleClass="btn-menu" text="Caja Diaria">
                     <graphic>
                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" smooth="true">
                             <image>

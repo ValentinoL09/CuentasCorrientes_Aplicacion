@@ -82,3 +82,97 @@
 .btn-cerrar-sesion:hover {
     -fx-background-color: #ffa533;
 }
+
+/* --- EFECTO MENÚ ACTIVO --- */
+.btn-menu.active {
+    -fx-background-color: #2b2b36;
+    -fx-border-color: #8a2be2;
+    -fx-border-width: 0 0 0 4; /* Borde de 4px solo a la izquierda */
+    -fx-text-fill: white;
+}
+
+/* --- ESTILOS DE FORMULARIOS (Servicios y Clientes) --- */
+
+/* Fondo general de la pestaña */
+.fondo-pestana {
+    -fx-background-color: #1a1a20;
+    -fx-padding: 30;
+}
+
+/* El panel gris que envuelve todo */
+.panel-formulario {
+    -fx-background-color: #25252e;
+    -fx-background-radius: 10;
+    -fx-border-color: #3f3f4e;
+    -fx-border-radius: 10;
+    -fx-padding: 25;
+}
+
+/* Título principal naranja */
+.titulo-naranja {
+    -fx-text-fill: #ff8c00;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+/* Textitos arriba de los inputs */
+.label-form {
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+}
+
+/* Cajas de texto con borde violeta */
+.input-form {
+    -fx-background-color: #1a1a20;
+    -fx-border-color: #8a2be2;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-text-fill: white;
+    -fx-padding: 8;
+}
+
+/* --- BOTONES DEL FORMULARIO --- */
+.btn-form-primario {
+    -fx-background-color: #8a2be2;
+    -fx-text-fill: white;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+}
+.btn-form-secundario {
+    -fx-background-color: transparent;
+    -fx-border-color: #8a2be2;
+    -fx-text-fill: #8a2be2;
+    -fx-border-radius: 5;
+    -fx-cursor: hand;
+}
+.btn-form-peligro {
+    -fx-background-color: transparent;
+    -fx-border-color: #ff8c00;
+    -fx-text-fill: #ff8c00;
+    -fx-border-radius: 5;
+    -fx-cursor: hand;
+}
+
+/* --- TABLA OSCURA --- */
+.tabla-oscura {
+    -fx-background-color: transparent;
+    -fx-border-color: #3f3f4e;
+    -fx-border-radius: 5;
+}
+.tabla-oscura .column-header {
+    -fx-background-color: #13131a;
+}
+.tabla-oscura .column-header .label {
+    -fx-text-fill: #ff8c00;
+    -fx-font-weight: bold;
+}
+.tabla-oscura .table-row-cell {
+    -fx-background-color: #25252e;
+    -fx-border-color: transparent transparent #1a1a20 transparent;
+}
+.tabla-oscura .table-row-cell:odd {
+    -fx-background-color: #2b2b36; /* Hace que las filas intercalen colores */
+}
+.tabla-oscura .table-cell {
+    -fx-text-fill: white;
+}

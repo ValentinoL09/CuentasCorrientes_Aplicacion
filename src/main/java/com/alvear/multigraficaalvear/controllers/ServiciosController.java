@@ -19,6 +19,24 @@ import java.util.ResourceBundle;
 public class ServiciosController implements Initializable {
 
     @FXML
+    public void initialize() {
+        // Le decimos a cada columna qué atributo de tu clase "Servicio" tiene que leer
+        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        colCategoria.setCellValueFactory(new PropertyValueFactory<>("categoria"));
+        colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
+
+        // Acá llamás al método que ya tenías para traer los datos de tu base de datos
+        cargarServiciosEnTabla(); 
+    }
+
+    private void cargarServiciosEnTabla() {
+        // Tu lógica vieja que hace el SELECT a la base de datos y llena un ObservableList
+        // ...
+        // tablaServicios.setItems(listaDeServicios);
+    }
+
+    @FXML
     private TextField txtNombre;
     @FXML
     private TextField txtCategoria;
