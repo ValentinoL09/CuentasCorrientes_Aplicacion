@@ -60,6 +60,8 @@ public class MainDashboardController {
         try {
             javafx.scene.Node vista = FXMLLoader.load(getClass().getResource(rutaFxml));
             contentArea.setCenter(vista);
+            Stage stage = (Stage) contentArea.getScene().getWindow();
+            stage.setMaximized(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
