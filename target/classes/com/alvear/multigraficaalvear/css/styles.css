@@ -1,0 +1,43 @@
+/* Fondo general de la pantalla */
+.fondo-oscuro {
+    -fx-background-color: #1e1e24;
+}
+
+/* La caja que envuelve al ícono y al texto */
+.caja-input {
+    -fx-background-color: #2b2b36;
+    -fx-background-radius: 10;
+    -fx-border-color: #3f3f4e;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+}
+
+/* El campo de texto en sí (le sacamos el fondo por defecto) */
+.input-transparente {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #8b8b99;
+    -fx-font-size: 18px;
+}
+
+/* El botón con el degradado de violeta a naranja */
+.btn-degradado {
+    -fx-background-color: linear-gradient(to right, #8a2be2, #ff8c00);
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+}
+
+/* Un toque al botón cuando pasás el mouse por arriba (Hover) */
+.btn-degradado:hover {
+    -fx-background-color: linear-gradient(to right, #9b42eb, #ffa533);
+}
+
+/* Estilo para el texto del título */
+.titulo-login {
+    -fx-text-fill: white;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
