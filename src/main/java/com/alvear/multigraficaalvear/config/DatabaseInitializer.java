@@ -57,13 +57,23 @@ public class DatabaseInitializer {
                     ")";
             stmt.execute(createAuditoriaTable);
 
+            // AGREGAMOS detalle TEXT a la creación original
             String createServiciosTable = "CREATE TABLE IF NOT EXISTS servicios (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "nombre TEXT NOT NULL," +
                     "categoria TEXT," +
-                    "precio_sugerido REAL" +
+                    "precio_sugerido REAL," +
+                    "detalle TEXT" + 
                     ")";
             stmt.execute(createServiciosTable);
+
+            // TÉCNICA DE MIGRACIÓN: Si la tabla ya existe de antes, le inyectamos la columna.
+            // Si la columna ya existe, el catch ignora el error silenciosamente.
+            try {
+                stmt.execute("ALTER TABLE servicios ADD COLUMN detalle TEXT");
+            } catch (SQLException e) {
+                // La columna ya existe, no hacemos nada.
+            }
 
             String createDetalleVentasTable = "CREATE TABLE IF NOT EXISTS detalle_ventas (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +

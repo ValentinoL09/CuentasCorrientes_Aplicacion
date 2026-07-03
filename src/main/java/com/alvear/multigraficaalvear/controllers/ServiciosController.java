@@ -18,48 +18,22 @@ import java.util.ResourceBundle;
 
 public class ServiciosController implements Initializable {
 
-    @FXML
-    public void initialize() {
-        // Le decimos a cada columna qué atributo de tu clase "Servicio" tiene que leer
-        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        colCategoria.setCellValueFactory(new PropertyValueFactory<>("categoria"));
-        colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
-
-        // Acá llamás al método que ya tenías para traer los datos de tu base de datos
-        cargarServiciosEnTabla(); 
-    }
-
-    private void cargarServiciosEnTabla() {
-        // Tu lógica vieja que hace el SELECT a la base de datos y llena un ObservableList
-        // ...
-        // tablaServicios.setItems(listaDeServicios);
-    }
-
-    @FXML
-    private TextField txtNombre;
-    @FXML
-    private TextField txtCategoria;
-    @FXML
-    private TextField txtPrecioSugerido;
-    @FXML
-    private Button btnAgregar;
-    @FXML
-    private Button btnActualizar;
-    @FXML
-    private Button btnEliminar;
-    @FXML
-    private Button btnLimpiar;
-    @FXML
-    private TableView<Servicio> tblServicios;
-    @FXML
-    private TableColumn<Servicio, Integer> colId;
-    @FXML
-    private TableColumn<Servicio, String> colNombre;
-    @FXML
-    private TableColumn<Servicio, String> colCategoria;
-    @FXML
-    private TableColumn<Servicio, Double> colPrecio;
+    @FXML private TextField txtNombre;
+    @FXML private TextField txtCategoria;
+    @FXML private TextField txtPrecioSugerido;
+    @FXML private TextField txtDetalle; // Nuevo TextField
+    
+    @FXML private Button btnAgregar;
+    @FXML private Button btnActualizar;
+    @FXML private Button btnEliminar;
+    @FXML private Button btnLimpiar;
+    
+    @FXML private TableView<Servicio> tblServicios;
+    @FXML private TableColumn<Servicio, Integer> colId;
+    @FXML private TableColumn<Servicio, String> colNombre;
+    @FXML private TableColumn<Servicio, String> colCategoria;
+    @FXML private TableColumn<Servicio, Double> colPrecio;
+    @FXML private TableColumn<Servicio, String> colDetalle; // Nueva Columna
 
     private final ServicioDAO servicioDAO;
     private ObservableList<Servicio> listaServicios;
@@ -74,6 +48,7 @@ public class ServiciosController implements Initializable {
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colCategoria.setCellValueFactory(new PropertyValueFactory<>("categoria"));
         colPrecio.setCellValueFactory(new PropertyValueFactory<>("precioSugerido"));
+        colDetalle.setCellValueFactory(new PropertyValueFactory<>("detalle"));
 
         cargarTabla();
 
@@ -82,6 +57,7 @@ public class ServiciosController implements Initializable {
                 txtNombre.setText(newSelection.getNombre());
                 txtCategoria.setText(newSelection.getCategoria());
                 txtPrecioSugerido.setText(String.valueOf(newSelection.getPrecioSugerido()));
+                txtDetalle.setText(newSelection.getDetalle());
             }
         });
     }
@@ -99,6 +75,7 @@ public class ServiciosController implements Initializable {
             servicio.setNombre(txtNombre.getText());
             servicio.setCategoria(txtCategoria.getText());
             servicio.setPrecioSugerido(precio);
+            servicio.setDetalle(txtDetalle.getText());
 
             servicioDAO.insertar(servicio);
             limpiarCampos();
@@ -118,6 +95,7 @@ public class ServiciosController implements Initializable {
                 servicioSeleccionado.setNombre(txtNombre.getText());
                 servicioSeleccionado.setCategoria(txtCategoria.getText());
                 servicioSeleccionado.setPrecioSugerido(precio);
+                servicioSeleccionado.setDetalle(txtDetalle.getText());
 
                 servicioDAO.actualizar(servicioSeleccionado);
                 limpiarCampos();
@@ -149,6 +127,7 @@ public class ServiciosController implements Initializable {
         txtNombre.clear();
         txtCategoria.clear();
         txtPrecioSugerido.clear();
+        txtDetalle.clear();
         tblServicios.getSelectionModel().clearSelection();
     }
 

@@ -19,11 +19,12 @@ public class ServicioDAO {
     }
 
     public void insertar(Servicio servicio) {
-        String sql = "INSERT INTO servicios (nombre, categoria, precio_sugerido) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO servicios (nombre, categoria, precio_sugerido, detalle) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, servicio.getNombre());
             stmt.setString(2, servicio.getCategoria());
             stmt.setDouble(3, servicio.getPrecioSugerido());
+            stmt.setString(4, servicio.getDetalle());
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -31,12 +32,13 @@ public class ServicioDAO {
     }
 
     public void actualizar(Servicio servicio) {
-        String sql = "UPDATE servicios SET nombre = ?, categoria = ?, precio_sugerido = ? WHERE id = ?";
+        String sql = "UPDATE servicios SET nombre = ?, categoria = ?, precio_sugerido = ?, detalle = ? WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, servicio.getNombre());
             stmt.setString(2, servicio.getCategoria());
             stmt.setDouble(3, servicio.getPrecioSugerido());
-            stmt.setInt(4, servicio.getId());
+            stmt.setString(4, servicio.getDetalle());
+            stmt.setInt(5, servicio.getId());
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -64,6 +66,7 @@ public class ServicioDAO {
                 servicio.setNombre(rs.getString("nombre"));
                 servicio.setCategoria(rs.getString("categoria"));
                 servicio.setPrecioSugerido(rs.getDouble("precio_sugerido"));
+                servicio.setDetalle(rs.getString("detalle")); // Leemos el detalle
                 servicios.add(servicio);
             }
         } catch (SQLException e) {

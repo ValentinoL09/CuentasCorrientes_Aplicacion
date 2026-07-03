@@ -6,6 +6,7 @@ public class Servicio {
     private String nombre;
     private String categoria;
     private double precioSugerido;
+    private String detalle; // Nueva variable
 
     public Servicio() {
     }
@@ -53,6 +54,14 @@ public class Servicio {
 
     public void setPrecioSugerido(double precioSugerido) {
         this.precioSugerido = precioSugerido;
+    }
+
+    public String getDetalle() {
+        return detalle;
+    }
+
+    public void setDetalle(String detalle) {
+        this.detalle = detalle;
     }
 
     @Override

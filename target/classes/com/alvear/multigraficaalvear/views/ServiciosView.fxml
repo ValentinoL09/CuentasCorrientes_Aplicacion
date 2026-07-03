@@ -30,6 +30,11 @@
                         <Label styleClass="label-form" text="Precio Sugerido" />
                         <TextField fx:id="txtPrecioSugerido" promptText="0.00" styleClass="input-form" />
                     </VBox>
+
+                    <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                        <Label styleClass="label-form" text="Detalles" />
+                        <TextField fx:id="txtDetalle" promptText="Opcional..." styleClass="input-form" />
+                    </VBox>
                 </children>
             </HBox>
 
@@ -43,12 +48,15 @@
             </HBox>
 
             <TableView fx:id="tblServicios" styleClass="tabla-oscura" VBox.vgrow="ALWAYS">
+                <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                </columnResizePolicy>
                 <columns>
                     <TableColumn fx:id="colId" text="ID" prefWidth="50.0" />
                     <TableColumn fx:id="colNombre" text="Nombre" prefWidth="200.0" />
                     <TableColumn fx:id="colCategoria" text="Categoria" prefWidth="150.0" />
                     <TableColumn fx:id="colPrecio" text="Precio" prefWidth="100.0" />
-                    <TableColumn text="Acciones" prefWidth="100.0" />
+                    <TableColumn fx:id="colDetalle" text="Detalles" prefWidth="200.0" />
                 </columns>
                 <VBox.margin>
                     <Insets top="10.0" />
