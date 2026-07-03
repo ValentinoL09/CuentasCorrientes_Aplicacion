@@ -33,7 +33,12 @@ public class DetalleVentaDAO {
 
     public List<DetalleVenta> listarPorVenta(int ventaId) {
         List<DetalleVenta> detalles = new ArrayList<>();
-        String sql = "SELECT * FROM detalle_ventas WHERE venta_id = ?";
+        // ACÁ ESTÁ LA MAGIA: Hacemos un INNER JOIN para "robarle" el nombre a la tabla servicios
+        String sql = "SELECT d.id, d.venta_id, d.servicio_id, d.cantidad, d.precio_unitario, s.nombre AS nombre_servicio " +
+                     "FROM detalle_ventas d " +
+                     "INNER JOIN servicios s ON d.servicio_id = s.id " +
+                     "WHERE d.venta_id = ?";
+                     
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, ventaId);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -44,6 +49,7 @@ public class DetalleVentaDAO {
                     detalle.setServicioId(rs.getInt("servicio_id"));
                     detalle.setCantidad(rs.getInt("cantidad"));
                     detalle.setPrecioUnitario(rs.getDouble("precio_unitario"));
+                    detalle.setNombreServicio(rs.getString("nombre_servicio")); // Lo guardamos
                     detalles.add(detalle);
                 }
             }

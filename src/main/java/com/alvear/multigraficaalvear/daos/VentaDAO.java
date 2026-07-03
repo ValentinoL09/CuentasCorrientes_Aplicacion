@@ -20,15 +20,17 @@ public class VentaDAO {
     }
 
     public int insertar(Venta venta) {
-        String sql = "INSERT INTO ventas (cliente_id, tipo_venta_id, descripcion, monto_total, monto_recibido, fecha) VALUES (?, ?, ?, ?, ?, ?)";
+        // Quitamos tipo_venta_id y sumamos detalle
+        String sql = "INSERT INTO ventas (cliente_id, descripcion, monto_total, monto_recibido, fecha, detalle) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, venta.getClienteId());
-            stmt.setInt(2, venta.getTipoVentaId());
-            stmt.setString(3, venta.getDescripcion());
-            stmt.setDouble(4, venta.getMontoTotal());
-            stmt.setDouble(5, venta.getMontoRecibido());
-            stmt.setString(6, venta.getFecha().toString());
+            stmt.setString(2, venta.getDescripcion());
+            stmt.setDouble(3, venta.getMontoTotal());
+            stmt.setDouble(4, venta.getMontoRecibido());
+            stmt.setString(5, venta.getFecha().toString());
+            stmt.setString(6, venta.getDetalle());
             stmt.executeUpdate();
+            
             ResultSet rs = stmt.getGeneratedKeys();
             if (rs.next()) {
                 return rs.getInt(1);
@@ -41,18 +43,18 @@ public class VentaDAO {
 
     public List<Venta> obtenerTodas() {
         List<Venta> ventas = new ArrayList<>();
-        String sql = "SELECT * FROM ventas";
+        String sql = "SELECT * FROM ventas ORDER BY id DESC"; // Ordenamos para ver la más reciente primero
         try (PreparedStatement stmt = connection.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 Venta venta = new Venta();
                 venta.setId(rs.getInt("id"));
                 venta.setClienteId(rs.getInt("cliente_id"));
-                venta.setTipoVentaId(rs.getInt("tipo_venta_id"));
                 venta.setDescripcion(rs.getString("descripcion"));
                 venta.setMontoTotal(rs.getDouble("monto_total"));
                 venta.setMontoRecibido(rs.getDouble("monto_recibido"));
                 venta.setFecha(LocalDate.parse(rs.getString("fecha")));
+                venta.setDetalle(rs.getString("detalle"));
                 ventas.add(venta);
             }
         } catch (SQLException e) {
@@ -61,43 +63,21 @@ public class VentaDAO {
         return ventas;
     }
 
-    public List<Venta> obtenerPorCliente(int clienteId) {
-        List<Venta> ventas = new ArrayList<>();
-        String sql = "SELECT * FROM ventas WHERE cliente_id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, clienteId);
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    Venta venta = new Venta();
-                    venta.setId(rs.getInt("id"));
-                    venta.setClienteId(rs.getInt("cliente_id"));
-                    venta.setTipoVentaId(rs.getInt("tipo_venta_id"));
-                    venta.setDescripcion(rs.getString("descripcion"));
-                    venta.setMontoTotal(rs.getDouble("monto_total"));
-                    venta.setMontoRecibido(rs.getDouble("monto_recibido"));
-                    venta.setFecha(LocalDate.parse(rs.getString("fecha")));
-                    ventas.add(venta);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return ventas;
-    }
-
     public void actualizar(Venta venta) {
-        String sql = "UPDATE ventas SET cliente_id = ?, tipo_venta_id = ?, descripcion = ?, monto_total = ?, monto_recibido = ?, fecha = ? WHERE id = ?";
+        String sql = "UPDATE ventas SET cliente_id = ?, descripcion = ?, monto_total = ?, monto_recibido = ?, fecha = ?, detalle = ? WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, venta.getClienteId());
-            stmt.setInt(2, venta.getTipoVentaId());
-            stmt.setString(3, venta.getDescripcion());
-            stmt.setDouble(4, venta.getMontoTotal());
-            stmt.setDouble(5, venta.getMontoRecibido());
-            stmt.setString(6, venta.getFecha().toString());
+            stmt.setString(2, venta.getDescripcion());
+            stmt.setDouble(3, venta.getMontoTotal());
+            stmt.setDouble(4, venta.getMontoRecibido());
+            stmt.setString(5, venta.getFecha().toString());
+            stmt.setString(6, venta.getDetalle());
             stmt.setInt(7, venta.getId());
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
+    // (Podés dejar el método obtenerPorCliente igual, solo sacale el setTipoVentaId y agregale el setDetalle)
 }

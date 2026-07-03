@@ -92,6 +92,12 @@ public class DatabaseInitializer {
                     ")";
             stmt.execute(createDetalleVentasTable);
 
+            try {
+                stmt.execute("ALTER TABLE ventas ADD COLUMN detalle TEXT");
+            } catch (SQLException e) {
+                // Si la columna ya existe, lo ignora.
+            }
+
         } catch (SQLException e) {
             System.err.println("Error al inicializar la base de datos: " + e.getMessage());
         }

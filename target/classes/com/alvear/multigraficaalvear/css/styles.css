@@ -176,3 +176,20 @@
 .tabla-oscura .table-cell {
     -fx-text-fill: white;
 }
+
+.combo-box > .list-cell {
+    -fx-text-fill: white;
+    -fx-alignment: center-left;
+    -fx-padding: 0 10 0 10; 
+}
+
+.combo-box-popup .list-cell {
+    -fx-text-fill: black;
+    -fx-alignment: center-left;
+    -fx-padding: 8 10 8 10;
+}
+
+.combo-box-popup .list-cell:filled:hover {
+    -fx-text-fill: white;
+    -fx-background-color: #17a2b8;
+}
