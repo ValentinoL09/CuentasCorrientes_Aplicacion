@@ -19,6 +19,12 @@ public class DatabaseInitializer {
                     ")";
             stmt.execute(createClientesTable);
 
+            try {
+                stmt.execute("ALTER TABLE clientes ADD COLUMN detalle TEXT");
+            } catch (SQLException e) {
+                // Si la columna ya existe, lo ignora silenciosamente.
+            }
+
             String createTiposVentaTable = "CREATE TABLE IF NOT EXISTS tipos_venta (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "nombre TEXT UNIQUE NOT NULL" +

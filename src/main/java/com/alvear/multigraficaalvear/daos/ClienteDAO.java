@@ -19,12 +19,13 @@ public class ClienteDAO {
     }
 
     public void insertar(Cliente cliente) {
-        String sql = "INSERT INTO clientes (nombre_cliente, telefono, cuit, correo) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO clientes (nombre_cliente, telefono, cuit, correo, detalle) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, cliente.getNombreCliente());
             stmt.setString(2, cliente.getTelefono());
             stmt.setString(3, cliente.getCuit());
             stmt.setString(4, cliente.getCorreo());
+            stmt.setString(5, cliente.getDetalle());
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -43,6 +44,7 @@ public class ClienteDAO {
                 cliente.setTelefono(rs.getString("telefono"));
                 cliente.setCuit(rs.getString("cuit"));
                 cliente.setCorreo(rs.getString("correo"));
+                cliente.setDetalle(rs.getString("detalle")); // Recuperamos el detalle
                 clientes.add(cliente);
             }
         } catch (SQLException e) {
@@ -52,13 +54,14 @@ public class ClienteDAO {
     }
 
     public void actualizar(Cliente cliente) {
-        String sql = "UPDATE clientes SET nombre_cliente = ?, telefono = ?, cuit = ?, correo = ? WHERE id = ?";
+        String sql = "UPDATE clientes SET nombre_cliente = ?, telefono = ?, cuit = ?, correo = ?, detalle = ? WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, cliente.getNombreCliente());
             stmt.setString(2, cliente.getTelefono());
             stmt.setString(3, cliente.getCuit());
             stmt.setString(4, cliente.getCorreo());
-            stmt.setInt(5, cliente.getId());
+            stmt.setString(5, cliente.getDetalle());
+            stmt.setInt(6, cliente.getId());
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

@@ -11,39 +11,29 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ClientesController implements Initializable {
 
-    @FXML
-    private TextField txtNombre;
-    @FXML
-    private TextField txtTelefono;
-    @FXML
-    private TextField txtCuit;
-    @FXML
-    private TextField txtCorreo;
-    @FXML
-    private Button btnGuardar;
-    @FXML
-    private Button btnModificar;
-    @FXML
-    private Button btnEliminar;
-    @FXML
-    private TableView<Cliente> tblClientes;
-    @FXML
-    private TableColumn<Cliente, Integer> colId;
-    @FXML
-    private TableColumn<Cliente, String> colNombre;
-    @FXML
-    private TableColumn<Cliente, String> colTelefono;
-    @FXML
-    private TableColumn<Cliente, String> colCuit;
-    @FXML
-    private TableColumn<Cliente, String> colCorreo;
+    @FXML private TextField txtNombre;
+    @FXML private TextField txtTelefono;
+    @FXML private TextField txtCuit;
+    @FXML private TextField txtCorreo;
+    @FXML private TextField txtDetalle; // Nuevo
+
+    @FXML private Button btnGuardar;
+    @FXML private Button btnModificar;
+    @FXML private Button btnEliminar;
+
+    @FXML private TableView<Cliente> tblClientes;
+    @FXML private TableColumn<Cliente, Integer> colId;
+    @FXML private TableColumn<Cliente, String> colNombre;
+    @FXML private TableColumn<Cliente, String> colTelefono;
+    @FXML private TableColumn<Cliente, String> colCuit;
+    @FXML private TableColumn<Cliente, String> colCorreo;
+    @FXML private TableColumn<Cliente, String> colDetalle; // Nuevo
 
     private final ClienteDAO clienteDAO;
     private ObservableList<Cliente> listaClientes;
@@ -54,11 +44,13 @@ public class ClientesController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        colNombre.setCellValueFactory(new PropertyValueFactory<>("nombreCliente"));
-        colTelefono.setCellValueFactory(new PropertyValueFactory<>("telefono"));
-        colCuit.setCellValueFactory(new PropertyValueFactory<>("cuit"));
-        colCorreo.setCellValueFactory(new PropertyValueFactory<>("correo"));
+        // Usamos Lambdas para evitar el bloqueo de JavaFX
+        colId.setCellValueFactory(cellData -> new javafx.beans.property.SimpleObjectProperty<>(cellData.getValue().getId()));
+        colNombre.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getNombreCliente()));
+        colTelefono.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getTelefono()));
+        colCuit.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getCuit()));
+        colCorreo.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getCorreo()));
+        colDetalle.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getDetalle()));
 
         cargarTabla();
 
@@ -68,6 +60,7 @@ public class ClientesController implements Initializable {
                 txtTelefono.setText(newSelection.getTelefono());
                 txtCuit.setText(newSelection.getCuit());
                 txtCorreo.setText(newSelection.getCorreo());
+                txtDetalle.setText(newSelection.getDetalle());
             }
         });
     }
@@ -84,6 +77,7 @@ public class ClientesController implements Initializable {
         cliente.setTelefono(txtTelefono.getText());
         cliente.setCuit(txtCuit.getText());
         cliente.setCorreo(txtCorreo.getText());
+        cliente.setDetalle(txtDetalle.getText());
 
         clienteDAO.insertar(cliente);
         limpiarCampos();
@@ -99,6 +93,7 @@ public class ClientesController implements Initializable {
             clienteSeleccionado.setTelefono(txtTelefono.getText());
             clienteSeleccionado.setCuit(txtCuit.getText());
             clienteSeleccionado.setCorreo(txtCorreo.getText());
+            clienteSeleccionado.setDetalle(txtDetalle.getText());
 
             clienteDAO.actualizar(clienteSeleccionado);
             limpiarCampos();
@@ -127,6 +122,7 @@ public class ClientesController implements Initializable {
         txtTelefono.clear();
         txtCuit.clear();
         txtCorreo.clear();
+        txtDetalle.clear();
         tblClientes.getSelectionModel().clearSelection();
     }
 
