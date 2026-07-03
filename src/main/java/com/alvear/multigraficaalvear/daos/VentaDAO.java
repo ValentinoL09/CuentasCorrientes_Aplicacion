@@ -20,7 +20,6 @@ public class VentaDAO {
     }
 
     public int insertar(Venta venta) {
-        // Quitamos tipo_venta_id y sumamos detalle
         String sql = "INSERT INTO ventas (cliente_id, descripcion, monto_total, monto_recibido, fecha, detalle) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, venta.getClienteId());
@@ -43,7 +42,9 @@ public class VentaDAO {
 
     public List<Venta> obtenerTodas() {
         List<Venta> ventas = new ArrayList<>();
-        String sql = "SELECT * FROM ventas ORDER BY id DESC"; // Ordenamos para ver la más reciente primero
+        // INNER JOIN para vincular la venta con el cliente y obtener su nombre real
+        String sql = "SELECT v.*, c.nombre_cliente AS nombre_cliente FROM ventas v INNER JOIN clientes c ON v.cliente_id = c.id ORDER BY v.id DESC";
+        
         try (PreparedStatement stmt = connection.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
@@ -55,6 +56,7 @@ public class VentaDAO {
                 venta.setMontoRecibido(rs.getDouble("monto_recibido"));
                 venta.setFecha(LocalDate.parse(rs.getString("fecha")));
                 venta.setDetalle(rs.getString("detalle"));
+                venta.setNombreCliente(rs.getString("nombre_cliente")); // Guardamos el nombre extraído
                 ventas.add(venta);
             }
         } catch (SQLException e) {
@@ -79,5 +81,29 @@ public class VentaDAO {
         }
     }
 
-    // (Podés dejar el método obtenerPorCliente igual, solo sacale el setTipoVentaId y agregale el setDetalle)
+    public List<Venta> obtenerPorCliente(int clienteId) {
+        List<Venta> ventas = new ArrayList<>();
+        // También le ponemos el INNER JOIN por si alguna vez querés ver el nombre del cliente desde acá
+        String sql = "SELECT v.*, c.nombre_cliente AS nombre_cliente FROM ventas v INNER JOIN clientes c ON v.cliente_id = c.id WHERE v.cliente_id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, clienteId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Venta venta = new Venta();
+                    venta.setId(rs.getInt("id"));
+                    venta.setClienteId(rs.getInt("cliente_id"));
+                    venta.setDescripcion(rs.getString("descripcion"));
+                    venta.setMontoTotal(rs.getDouble("monto_total"));
+                    venta.setMontoRecibido(rs.getDouble("monto_recibido"));
+                    venta.setFecha(LocalDate.parse(rs.getString("fecha")));
+                    venta.setDetalle(rs.getString("detalle"));
+                    venta.setNombreCliente(rs.getString("nombre_cliente"));
+                    ventas.add(venta);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ventas;
+    }
 }

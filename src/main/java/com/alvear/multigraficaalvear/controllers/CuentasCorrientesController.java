@@ -5,6 +5,7 @@ import com.alvear.multigraficaalvear.daos.VentaDAO;
 import com.alvear.multigraficaalvear.models.Pago;
 import com.alvear.multigraficaalvear.models.Venta;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -23,22 +24,14 @@ import java.util.stream.Collectors;
 
 public class CuentasCorrientesController implements Initializable {
 
-    @FXML
-    private TableView<Venta> tblVentas;
-    @FXML
-    private TableColumn<Venta, Integer> colIdVenta;
-    @FXML
-    private TableColumn<Venta, Integer> colCliente;
-    @FXML
-    private TableColumn<Venta, Double> colTotal;
-    @FXML
-    private TableColumn<Venta, Double> colRecibido;
-    @FXML
-    private TableColumn<Venta, Double> colSaldoPendiente;
-    @FXML
-    private TextField txtMontoPagar;
-    @FXML
-    private Button btnRegistrarPago;
+    @FXML private TableView<Venta> tblVentas;
+    @FXML private TableColumn<Venta, Integer> colIdVenta;
+    @FXML private TableColumn<Venta, String> colCliente; // Cambiamos de Integer a String
+    @FXML private TableColumn<Venta, Double> colTotal;
+    @FXML private TableColumn<Venta, Double> colRecibido;
+    @FXML private TableColumn<Venta, Double> colSaldoPendiente;
+    @FXML private TextField txtMontoPagar;
+    @FXML private Button btnRegistrarPago;
 
     private final VentaDAO ventaDAO;
     private final PagoDAO pagoDAO;
@@ -52,7 +45,10 @@ public class CuentasCorrientesController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         colIdVenta.setCellValueFactory(new PropertyValueFactory<>("id"));
-        colCliente.setCellValueFactory(new PropertyValueFactory<>("clienteId"));
+        
+        // Extraemos el nombre del cliente en lugar del ID
+        colCliente.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNombreCliente()));
+        
         colTotal.setCellValueFactory(new PropertyValueFactory<>("montoTotal"));
         colRecibido.setCellValueFactory(new PropertyValueFactory<>("montoRecibido"));
         colSaldoPendiente.setCellValueFactory(cellData -> {
@@ -76,7 +72,7 @@ public class CuentasCorrientesController implements Initializable {
     private void registrarPago() {
         Venta ventaSeleccionada = tblVentas.getSelectionModel().getSelectedItem();
         if (ventaSeleccionada == null) {
-            mostrarAlerta("Por favor, seleccione una venta de la tabla.");
+            mostrarAlerta("Por favor, seleccione una cuenta de la tabla.", Alert.AlertType.WARNING);
             return;
         }
 
@@ -84,18 +80,18 @@ public class CuentasCorrientesController implements Initializable {
         try {
             montoPagar = Double.parseDouble(txtMontoPagar.getText());
         } catch (NumberFormatException e) {
-            mostrarAlerta("El monto a pagar debe ser un numero valido.");
+            mostrarAlerta("El monto a pagar debe ser un numero valido.", Alert.AlertType.WARNING);
             return;
         }
 
         if (montoPagar <= 0) {
-            mostrarAlerta("El monto a pagar debe ser mayor a 0.");
+            mostrarAlerta("El monto a pagar debe ser mayor a 0.", Alert.AlertType.WARNING);
             return;
         }
 
         double saldoPendiente = ventaSeleccionada.getMontoTotal() - ventaSeleccionada.getMontoRecibido();
         if (montoPagar > saldoPendiente) {
-            mostrarAlerta("El monto a pagar no puede superar el saldo pendiente.");
+            mostrarAlerta("El monto a pagar no puede superar el saldo pendiente ($" + saldoPendiente + ").", Alert.AlertType.WARNING);
             return;
         }
 
@@ -110,11 +106,11 @@ public class CuentasCorrientesController implements Initializable {
 
         txtMontoPagar.clear();
         cargarTabla();
-        mostrarAlerta("Pago registrado correctamente.");
+        mostrarAlerta("Pago registrado correctamente.", Alert.AlertType.INFORMATION);
     }
 
-    private void mostrarAlerta(String mensaje) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    private void mostrarAlerta(String mensaje, Alert.AlertType tipo) {
+        Alert alert = new Alert(tipo);
         alert.setTitle("Informacion");
         alert.setHeaderText(null);
         alert.setContentText(mensaje);

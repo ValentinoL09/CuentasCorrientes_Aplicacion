@@ -10,7 +10,8 @@ public class Venta {
     private double montoTotal;
     private double montoRecibido;
     private LocalDate fecha;
-    private String detalle; // Nueva variable
+    private String detalle;
+    private String nombreCliente;
 
     public Venta() {
     }
@@ -54,4 +55,7 @@ public class Venta {
 
     public String getDetalle() { return detalle; }
     public void setDetalle(String detalle) { this.detalle = detalle; }
+
+    public String getNombreCliente() { return nombreCliente; }
+    public void setNombreCliente(String nombreCliente) { this.nombreCliente = nombreCliente; }
 }

@@ -193,3 +193,30 @@
     -fx-text-fill: white;
     -fx-background-color: #17a2b8;
 }
+
+/* 1. Color de fondo de la fila seleccionada */
+.tabla-oscura .table-row-cell:selected {
+    -fx-background-color: #8a2be2; /* Un morado brillante que hace juego con tus botones */
+}
+
+/* 2. Forzar que el texto dentro de la fila seleccionada sea blanco para que contraste */
+.tabla-oscura .table-row-cell:selected .table-cell {
+    -fx-text-fill: white;
+    -fx-font-weight: bold; /* Lo ponemos en negrita para que resalte más */
+}
+
+/* 3. MANTENER el color encendido incluso cuando la tabla pierde el foco (ej: al escribir el monto) */
+.tabla-oscura:focused .table-row-cell:selected,
+.tabla-oscura:focused .table-row-cell:selected .table-cell {
+    -fx-background-color: #8a2be2;
+    -fx-text-fill: white;
+}
+
+.tabla-oscura .table-row-cell {
+    -fx-cell-size: 35px; /* Forzamos un alto mínimo para la fila entera */
+}
+
+.tabla-oscura .table-cell {
+    -fx-padding: 5 10 5 10; /* Arriba 5, Derecha 10, Abajo 5, Izquierda 10 */
+    -fx-alignment: center-left;
+}

@@ -83,7 +83,7 @@ public class VentasController implements Initializable {
         // Columnas Historial (Maestro)
         colHistId.setCellValueFactory(cell -> new javafx.beans.property.SimpleObjectProperty<>(cell.getValue().getId()));
         colHistFecha.setCellValueFactory(cell -> new javafx.beans.property.SimpleStringProperty(cell.getValue().getFecha().toString()));
-        colHistCliente.setCellValueFactory(cell -> new javafx.beans.property.SimpleStringProperty("ID Cliente: " + cell.getValue().getClienteId()));
+        colHistCliente.setCellValueFactory(cell -> new javafx.beans.property.SimpleStringProperty(cell.getValue().getNombreCliente()));
         colHistTotal.setCellValueFactory(cell -> new javafx.beans.property.SimpleObjectProperty<>(cell.getValue().getMontoTotal()));
         colHistDetalle.setCellValueFactory(cell -> new javafx.beans.property.SimpleStringProperty(cell.getValue().getDetalle()));
 
