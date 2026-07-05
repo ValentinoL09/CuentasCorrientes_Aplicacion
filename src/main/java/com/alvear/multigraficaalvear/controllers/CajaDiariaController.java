@@ -13,6 +13,7 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 
@@ -31,11 +32,77 @@ public class CajaDiariaController {
 
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+    // =========================================================================
+    // PERSISTENCIA DE SESIÓN
+    // Guardamos las fechas estáticamente para que no se borren al cambiar de pestaña
+    // =========================================================================
+    private static LocalDate sesionFechaInicio = LocalDate.now();
+    private static LocalDate sesionFechaFin = LocalDate.now();
+
     @FXML
     public void initialize() {
-        dpFechaInicio.setValue(LocalDate.now());
-        dpFechaFin.setValue(LocalDate.now());
-        calcularCaja(LocalDate.now(), LocalDate.now());
+        // 1. Bloqueamos el teclado para que no puedan escribir fechas inválidas a mano
+        dpFechaInicio.setEditable(false);
+        dpFechaFin.setEditable(false);
+
+        // 2. Aplicamos las reglas de negocio (no fechas futuras, no desfasajes)
+        configurarRestriccionesFechas();
+
+        // 3. Restauramos las fechas que el usuario había elegido antes de cambiar de pestaña
+        dpFechaInicio.setValue(sesionFechaInicio);
+        dpFechaFin.setValue(sesionFechaFin);
+
+        // 4. Forzamos un recálculo. Esto es clave: si el usuario hizo una venta en otra 
+        // pestaña y volvió a la Caja, los números se van a actualizar solos al instante.
+        calcularCaja(sesionFechaInicio, sesionFechaFin);
+    }
+
+    private void configurarRestriccionesFechas() {
+        // RESTRICCIONES: FECHA DE INICIO
+        dpFechaInicio.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                if (empty || date == null) {
+                    setDisable(true);
+                    return;
+                }
+                
+                LocalDate fechaFin = dpFechaFin.getValue();
+                
+                // Regla: No puede ser en el futuro || No puede ser mayor a la Fecha Fin
+                if (date.isAfter(LocalDate.now()) || (fechaFin != null && date.isAfter(fechaFin))) {
+                    setDisable(true);
+                    setStyle("-fx-background-color: #ffcdd2;"); // Rojo pastel
+                } else {
+                    setDisable(false);
+                    setStyle(""); // IMPORTANTE: Limpiar el color si la celda se recicla
+                }
+            }
+        });
+
+        // RESTRICCIONES: FECHA DE FIN
+        dpFechaFin.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                if (empty || date == null) {
+                    setDisable(true);
+                    return;
+                }
+                
+                LocalDate fechaInicio = dpFechaInicio.getValue();
+                
+                // Regla: No puede ser en el futuro || No puede ser menor a la Fecha Inicio
+                if (date.isAfter(LocalDate.now()) || (fechaInicio != null && date.isBefore(fechaInicio))) {
+                    setDisable(true);
+                    setStyle("-fx-background-color: #ffcdd2;"); 
+                } else {
+                    setDisable(false);
+                    setStyle("");
+                }
+            }
+        });
     }
 
     @FXML
@@ -51,18 +118,22 @@ public class CajaDiariaController {
         String inicio = fechaInicio.format(formatter);
         String fin = fechaFin.format(formatter);
 
-        // 1. VENTAS TOTALES (Lo que le sale al cliente el trabajo)
+        // 1. VENTAS TOTALES
         double ventasTotales = CajaDAO.getInstance().obtenerTotalFacturadoPorRango(inicio, fin);
         
-        // 2. TOTAL A COBRAR (Suma de las deudas de los clientes)
+        // 2. TOTAL A COBRAR
         double totalACobrar = CajaDAO.getInstance().obtenerTotalACobrarPorRango(inicio, fin);
 
-        // 3. TOTAL COBRADO (Pagos iniciales + Pagos de cuentas corrientes)
+        // 3. TOTAL COBRADO
         double pagosIniciales = CajaDAO.getInstance().obtenerPagosInicialesPorRango(inicio, fin);
         double cobrosCuentas = CajaDAO.getInstance().obtenerPagosCuentasCorrientesPorRango(inicio, fin);
         double totalCobrado = pagosIniciales + cobrosCuentas; 
 
-        // 4. Mostramos en la pantalla
+        // Actualizamos la memoria estática de la sesión
+        sesionFechaInicio = fechaInicio;
+        sesionFechaFin = fechaFin;
+
+        // Mostramos en la pantalla
         lblVentasTotales.setText(String.format("%.2f", ventasTotales));
         lblTotalACobrar.setText(String.format("%.2f", totalACobrar));
         lblTotalCobrado.setText(String.format("%.2f", totalCobrado));
