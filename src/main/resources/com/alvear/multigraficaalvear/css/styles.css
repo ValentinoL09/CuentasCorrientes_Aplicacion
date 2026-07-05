@@ -220,3 +220,29 @@
     -fx-padding: 5 10 5 10; /* Arriba 5, Derecha 10, Abajo 5, Izquierda 10 */
     -fx-alignment: center-left;
 }
+
+.fondo-pestana {
+    -fx-background-color: #f4f4f4; /* Un gris muuuy clarito para el fondo general de la pantalla */
+}
+
+.tarjeta-blanca {
+    -fx-background-color: white;
+    -fx-background-radius: 15px; /* Bordes redondeados */
+    -fx-padding: 20px;
+    /* Sombra sutil para darle profundidad */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5); 
+}
+
+.btn-redondeado-gris {
+    -fx-background-color: #e0e0e0;
+    -fx-text-fill: #333333;
+    -fx-font-size: 14px;
+    -fx-background-radius: 20px; /* Botón bien redondo como una píldora */
+    -fx-padding: 8px 25px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 5, 0, 0, 2);
+}
+
+.btn-redondeado-gris:hover {
+    -fx-background-color: #d5d5d5;
+}
