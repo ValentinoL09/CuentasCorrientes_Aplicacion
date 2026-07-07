@@ -15,64 +15,82 @@
 
                 <Button fx:id="btnServicios" maxWidth="Infinity" onAction="#mostrarServicios" styleClass="btn-menu" text="Servicios">
                     <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" smooth="true">
+                        <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" smooth="true">
                             <image>
                                 <Image url="@../images/servicios.png" />
                             </image>
+                            <effect>
+                                <javafx.scene.effect.ColorAdjust brightness="1.0" />
+                            </effect>
                         </ImageView>
                     </graphic>
                 </Button>
 
                 <Button fx:id="btnClientes" maxWidth="Infinity" onAction="#mostrarClientes" styleClass="btn-menu" text="Clientes">
                     <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" smooth="true">
+                        <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" smooth="true">
                             <image>
                                 <Image url="@../images/clientes.png" />
                             </image>
+                            <effect>
+                                <javafx.scene.effect.ColorAdjust brightness="1.0" />
+                            </effect>
                         </ImageView>
                     </graphic>
                 </Button>
 
                 <Button fx:id="btnVentas" maxWidth="Infinity" onAction="#mostrarVentas" styleClass="btn-menu" text="Ventas">
                     <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" smooth="true">
+                        <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" smooth="true">
                             <image>
                                 <Image url="@../images/ventas.png" />
                             </image>
+                            <effect>
+                                <javafx.scene.effect.ColorAdjust brightness="1.0" />
+                            </effect>
                         </ImageView>
                     </graphic>
                 </Button>
 
                 <Button fx:id="btnCuentas" maxWidth="Infinity" onAction="#mostrarCuentasCorrientes" styleClass="btn-menu" text="Cuentas Corrientes">
                     <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" smooth="true">
+                        <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" smooth="true">
                             <image>
                                 <Image url="@../images/cuenta_corriente.png" />
                             </image>
+                            <effect>
+                                <javafx.scene.effect.ColorAdjust brightness="1.0" />
+                            </effect>
                         </ImageView>
                     </graphic>
                 </Button>
 
                 <Button fx:id="btnCaja" maxWidth="Infinity" onAction="#mostrarCajaDiaria" styleClass="btn-menu" text="Caja Diaria">
                     <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" smooth="true">
+                        <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" smooth="true">
                             <image>
                                 <Image url="@../images/caja.png" />
                             </image>
+                            <effect>
+                                <javafx.scene.effect.ColorAdjust brightness="1.0" />
+                            </effect>
                         </ImageView>
                     </graphic>
                 </Button>
 
                 <VBox VBox.vgrow="ALWAYS" />
 
-                <Button maxWidth="Infinity" onAction="#respaldarBaseDeDatos" styleClass="btn-menu" text="💾 Respaldar Datos" />
+                <Button maxWidth="Infinity" onAction="#respaldarBaseDeDatos" styleClass="btn-menu" text="💾      Respaldar Datos" />
 
                 <Button maxWidth="Infinity" onAction="#cerrarSesion" styleClass="btn-cerrar-sesion" text="Cerrar Sesion">
                     <graphic>
-                        <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" smooth="true">
+                        <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" smooth="true">
                             <image>
                                 <Image url="@../images/contrasena.png" /> 
                             </image>
+                            <effect>
+                                <javafx.scene.effect.ColorAdjust brightness="1.0" />
+                            </effect>
                         </ImageView>
                     </graphic>
                 </Button>

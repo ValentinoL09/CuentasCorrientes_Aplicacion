@@ -25,10 +25,13 @@
 
         <HBox alignment="CENTER_LEFT" maxWidth="300.0" prefHeight="50.0" styleClass="caja-input">
             <children>
-                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" smooth="true">
+                <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" smooth="true">
                     <image>
                         <Image url="@../images/usuarios.png" />
                     </image>
+                    <effect>
+                        <javafx.scene.effect.ColorAdjust brightness="1.0" />
+                    </effect>
                     <HBox.margin>
                         <Insets left="15.0" right="10.0" />
                     </HBox.margin>
@@ -39,10 +42,13 @@
 
         <HBox alignment="CENTER_LEFT" maxWidth="300.0" prefHeight="50.0" styleClass="caja-input">
             <children>
-                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" smooth="true">
+                <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" smooth="true">
                     <image>
                         <Image url="@../images/contrasena.png" />
                     </image>
+                    <effect>
+                        <javafx.scene.effect.ColorAdjust brightness="1.0" />
+                    </effect>
                     <HBox.margin>
                         <Insets left="15.0" right="10.0" />
                     </HBox.margin>

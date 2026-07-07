@@ -31,6 +31,7 @@ public class MainDashboardController {
     @FXML
     private void mostrarClientes() {
         cargarVista("/com/alvear/multigraficaalvear/views/ClientesView.fxml");
+        marcarBotonActivo(btnClientes);
     }
 
     @FXML
