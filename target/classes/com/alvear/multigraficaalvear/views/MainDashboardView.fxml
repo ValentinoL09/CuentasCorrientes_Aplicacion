@@ -65,6 +65,8 @@
 
                 <VBox VBox.vgrow="ALWAYS" />
 
+                <Button maxWidth="Infinity" onAction="#respaldarBaseDeDatos" styleClass="btn-menu" text="💾 Respaldar Datos" />
+
                 <Button maxWidth="Infinity" onAction="#cerrarSesion" styleClass="btn-cerrar-sesion" text="Cerrar Sesion">
                     <graphic>
                         <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" smooth="true">

@@ -5,10 +5,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class MainDashboardController {
     @FXML private Button btnServicios;
@@ -47,6 +55,49 @@ public class MainDashboardController {
     private void mostrarCajaDiaria() {
         cargarVista("/com/alvear/multigraficaalvear/views/CajaDiariaView.fxml");
         marcarBotonActivo(btnCaja);
+    }
+
+    @FXML
+    private void respaldarBaseDeDatos() {
+        try {
+            // 1. Configuramos la ventana de Windows para elegir dónde guardar
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Guardar Copia de Seguridad");
+            
+            // 2. Nombre por defecto (Ej: Multigrafica_Backup_2026-07-06.db)
+            String fechaHoy = LocalDate.now().toString();
+            fileChooser.setInitialFileName("Multigrafica_Backup_" + fechaHoy + ".db");
+            
+            // 3. Filtro para que solo permita guardar extensiones .db
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Archivos de Base de Datos (*.db)", "*.db");
+            fileChooser.getExtensionFilters().add(extFilter);
+
+            // 4. Abrimos la ventana
+            File fileDestino = fileChooser.showSaveDialog(null);
+
+            // 5. Si el usuario eligió un lugar y no apretó "Cancelar"
+            if (fileDestino != null) {
+                // Buscamos el archivo real de tu proyecto
+                Path origen = Paths.get("multigrafica.db");
+                Path destino = fileDestino.toPath();
+
+                // Copiamos el archivo
+                Files.copy(origen, destino, StandardCopyOption.REPLACE_EXISTING);
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Backup Exitoso");
+                alert.setHeaderText(null);
+                alert.setContentText("La copia de seguridad se guardó correctamente en:\n" + fileDestino.getAbsolutePath());
+                alert.showAndWait();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error en el Backup");
+            alert.setHeaderText(null);
+            alert.setContentText("Hubo un problema al crear la copia de seguridad:\n" + e.getMessage());
+            alert.showAndWait();
+        }
     }
 
     @FXML
