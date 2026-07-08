@@ -7,6 +7,7 @@ com\alvear\multigraficaalvear\config\DatabaseConnection.class
 com\alvear\multigraficaalvear\daos\ServicioDAO.class
 com\alvear\multigraficaalvear\models\Servicio.class
 com\alvear\multigraficaalvear\models\TipoVenta.class
+com\alvear\multigraficaalvear\controllers\CajaDiariaController$1.class
 com\alvear\multigraficaalvear\models\Cliente.class
 com\alvear\multigraficaalvear\models\DetalleVenta.class
 com\alvear\multigraficaalvear\daos\CajaDAO.class
@@ -22,4 +23,5 @@ com\alvear\multigraficaalvear\Launcher.class
 com\alvear\multigraficaalvear\controllers\ClientesController.class
 com\alvear\multigraficaalvear\daos\DetalleVentaDAO.class
 com\alvear\multigraficaalvear\daos\TipoVentaDAO.class
+com\alvear\multigraficaalvear\controllers\CajaDiariaController$2.class
 com\alvear\multigraficaalvear\controllers\CajaDiariaController.class

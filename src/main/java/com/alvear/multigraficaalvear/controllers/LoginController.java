@@ -29,7 +29,7 @@ public class LoginController {
         String usuario = txtUsuario.getText();
         String password = txtPassword.getText();
 
-        if ("admin".equals(usuario) && "admin".equals(password)) {
+        if ("multigrafica".equals(usuario) && "alvear".equals(password)) {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/alvear/multigraficaalvear/views/MainDashboardView.fxml"));
                 Parent root = loader.load();
