@@ -16,6 +16,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import com.alvear.multigraficaalvear.utils.FormatoUtil;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -57,6 +58,8 @@ public class CuentasCorrientesController implements Initializable {
         });
 
         cargarTabla();
+
+        FormatoUtil.aplicarFormatoNumerico(txtMontoPagar);
     }
 
     private void cargarTabla() {
@@ -78,7 +81,8 @@ public class CuentasCorrientesController implements Initializable {
 
         double montoPagar;
         try {
-            montoPagar = Double.parseDouble(txtMontoPagar.getText());
+            // NUEVO: Usamos la herramienta para limpiar el punto antes de convertir a número
+            montoPagar = FormatoUtil.obtenerValor(txtMontoPagar);
         } catch (NumberFormatException e) {
             mostrarAlerta("El monto a pagar debe ser un numero valido.", Alert.AlertType.WARNING);
             return;

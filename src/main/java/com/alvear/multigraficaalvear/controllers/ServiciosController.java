@@ -2,6 +2,8 @@ package com.alvear.multigraficaalvear.controllers;
 
 import com.alvear.multigraficaalvear.daos.ServicioDAO;
 import com.alvear.multigraficaalvear.models.Servicio;
+import com.alvear.multigraficaalvear.utils.FormatoUtil;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -12,6 +14,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -33,7 +36,7 @@ public class ServiciosController implements Initializable {
     @FXML private TableColumn<Servicio, String> colNombre;
     @FXML private TableColumn<Servicio, String> colCategoria;
     @FXML private TableColumn<Servicio, Double> colPrecio;
-    @FXML private TableColumn<Servicio, String> colDetalle; // Nueva Columna
+    @FXML private TableColumn<Servicio, String> colDetalle;
 
     private final ServicioDAO servicioDAO;
     private ObservableList<Servicio> listaServicios;
@@ -56,10 +59,11 @@ public class ServiciosController implements Initializable {
             if (newSelection != null) {
                 txtNombre.setText(newSelection.getNombre());
                 txtCategoria.setText(newSelection.getCategoria());
-                txtPrecioSugerido.setText(String.valueOf(newSelection.getPrecioSugerido()));
+                txtPrecioSugerido.setText(String.valueOf((long) newSelection.getPrecioSugerido()));
                 txtDetalle.setText(newSelection.getDetalle());
             }
         });
+        FormatoUtil.aplicarFormatoNumerico(txtPrecioSugerido); 
     }
 
     private void cargarTabla() {
@@ -70,7 +74,8 @@ public class ServiciosController implements Initializable {
     @FXML
     private void agregarServicio() {
         try {
-            double precio = Double.parseDouble(txtPrecioSugerido.getText());
+            double precio = FormatoUtil.obtenerValor(txtPrecioSugerido);
+            
             Servicio servicio = new Servicio();
             servicio.setNombre(txtNombre.getText());
             servicio.setCategoria(txtCategoria.getText());
@@ -91,7 +96,8 @@ public class ServiciosController implements Initializable {
         Servicio servicioSeleccionado = tblServicios.getSelectionModel().getSelectedItem();
         if (servicioSeleccionado != null) {
             try {
-                double precio = Double.parseDouble(txtPrecioSugerido.getText());
+                double precio = FormatoUtil.obtenerValor(txtPrecioSugerido);
+                
                 servicioSeleccionado.setNombre(txtNombre.getText());
                 servicioSeleccionado.setCategoria(txtCategoria.getText());
                 servicioSeleccionado.setPrecioSugerido(precio);

@@ -10,6 +10,7 @@ import javafx.scene.layout.VBox;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
+import com.alvear.multigraficaalvear.utils.FormatoUtil;
 
 import com.alvear.multigraficaalvear.daos.*;
 import com.alvear.multigraficaalvear.models.*;
@@ -97,6 +98,10 @@ public class VentasController implements Initializable {
         cargarServicios();
         cargarHistorial();
 
+        FormatoUtil.aplicarFormatoNumerico(txtCantidad);
+        FormatoUtil.aplicarFormatoNumerico(txtPrecio);
+        FormatoUtil.aplicarFormatoNumerico(txtMontoRecibido);
+
         // ACÁ ESCUCHAMOS LOS CLICS EN EL HISTORIAL PARA LLENAR LA TABLA SECUNDARIA
         tblHistorial.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, newSel) -> {
             if (newSel != null) {
@@ -159,7 +164,8 @@ public class VentasController implements Initializable {
         cmbServicios.setItems(FXCollections.observableArrayList(servicioDAO.listarTodos()));
         cmbServicios.setOnAction(e -> {
             Servicio s = cmbServicios.getValue();
-            if (s != null) txtPrecio.setText(String.valueOf(s.getPrecioSugerido()));
+            // Le agregamos el (long) al precio sugerido
+            if (s != null) txtPrecio.setText(String.valueOf((long) s.getPrecioSugerido()));
         });
     }
 
@@ -184,8 +190,9 @@ public class VentasController implements Initializable {
         if (s == null) { mostrarAlerta("Seleccione un servicio.", Alert.AlertType.WARNING); return; }
 
         try {
-            int cantidad = Integer.parseInt(txtCantidad.getText().trim());
-            double precio = Double.parseDouble(txtPrecio.getText().trim());
+            // USAMOS LA HERRAMIENTA PARA OBTENER LOS VALORES LIMPIOS
+            int cantidad = (int) FormatoUtil.obtenerValor(txtCantidad);
+            double precio = FormatoUtil.obtenerValor(txtPrecio);
 
             DetalleVenta d = new DetalleVenta();
             d.setServicioId(s.getId());
@@ -237,7 +244,8 @@ public class VentasController implements Initializable {
         
         if (!txtMontoRecibido.getText().trim().isEmpty()) {
             try {
-                montoRecibido = Double.parseDouble(txtMontoRecibido.getText().trim());
+                // USAMOS LA HERRAMIENTA PARA LIMPIAR EL MONTO ANTES DE GUARDAR EL PAGO
+                montoRecibido = FormatoUtil.obtenerValor(txtMontoRecibido);
             } catch (NumberFormatException e) {
                 mostrarAlerta("El monto recibido debe ser un número.", Alert.AlertType.WARNING);
                 return;
