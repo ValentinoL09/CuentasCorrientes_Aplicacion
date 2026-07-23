@@ -24,7 +24,6 @@ public class ServicioDAO {
             stmt.setString(1, servicio.getNombre());
             stmt.setString(2, servicio.getCategoria());
             stmt.setDouble(3, servicio.getPrecioSugerido());
-            stmt.setString(4, servicio.getDetalle());
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -37,7 +36,6 @@ public class ServicioDAO {
             stmt.setString(1, servicio.getNombre());
             stmt.setString(2, servicio.getCategoria());
             stmt.setDouble(3, servicio.getPrecioSugerido());
-            stmt.setString(4, servicio.getDetalle());
             stmt.setInt(5, servicio.getId());
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -66,7 +64,6 @@ public class ServicioDAO {
                 servicio.setNombre(rs.getString("nombre"));
                 servicio.setCategoria(rs.getString("categoria"));
                 servicio.setPrecioSugerido(rs.getDouble("precio_sugerido"));
-                servicio.setDetalle(rs.getString("detalle")); // Leemos el detalle
                 servicios.add(servicio);
             }
         } catch (SQLException e) {

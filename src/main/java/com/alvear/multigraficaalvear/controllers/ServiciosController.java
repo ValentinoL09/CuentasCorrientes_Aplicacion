@@ -24,7 +24,6 @@ public class ServiciosController implements Initializable {
     @FXML private TextField txtNombre;
     @FXML private TextField txtCategoria;
     @FXML private TextField txtPrecioSugerido;
-    @FXML private TextField txtDetalle; // Nuevo TextField
     
     @FXML private Button btnAgregar;
     @FXML private Button btnActualizar;
@@ -51,7 +50,6 @@ public class ServiciosController implements Initializable {
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colCategoria.setCellValueFactory(new PropertyValueFactory<>("categoria"));
         colPrecio.setCellValueFactory(new PropertyValueFactory<>("precioSugerido"));
-        colDetalle.setCellValueFactory(new PropertyValueFactory<>("detalle"));
 
         cargarTabla();
 
@@ -60,7 +58,6 @@ public class ServiciosController implements Initializable {
                 txtNombre.setText(newSelection.getNombre());
                 txtCategoria.setText(newSelection.getCategoria());
                 txtPrecioSugerido.setText(String.valueOf((long) newSelection.getPrecioSugerido()));
-                txtDetalle.setText(newSelection.getDetalle());
             }
         });
         FormatoUtil.aplicarFormatoNumerico(txtPrecioSugerido); 
@@ -80,7 +77,6 @@ public class ServiciosController implements Initializable {
             servicio.setNombre(txtNombre.getText());
             servicio.setCategoria(txtCategoria.getText());
             servicio.setPrecioSugerido(precio);
-            servicio.setDetalle(txtDetalle.getText());
 
             servicioDAO.insertar(servicio);
             limpiarCampos();
@@ -101,7 +97,6 @@ public class ServiciosController implements Initializable {
                 servicioSeleccionado.setNombre(txtNombre.getText());
                 servicioSeleccionado.setCategoria(txtCategoria.getText());
                 servicioSeleccionado.setPrecioSugerido(precio);
-                servicioSeleccionado.setDetalle(txtDetalle.getText());
 
                 servicioDAO.actualizar(servicioSeleccionado);
                 limpiarCampos();
@@ -133,7 +128,6 @@ public class ServiciosController implements Initializable {
         txtNombre.clear();
         txtCategoria.clear();
         txtPrecioSugerido.clear();
-        txtDetalle.clear();
         tblServicios.getSelectionModel().clearSelection();
     }
 

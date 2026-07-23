@@ -14,35 +14,47 @@
             
             <Label styleClass="titulo-naranja" text="Gestion de Clientes" />
 
+            <!-- FILA 1 DE CAMPOS -->
             <HBox spacing="15.0">
                 <children>
                     <VBox spacing="5.0" HBox.hgrow="ALWAYS">
-                        <Label styleClass="label-form" text="Nombre/Empresa" />
-                        <TextField fx:id="txtNombre" promptText="Nombre/Empresa" styleClass="input-form" />
+                        <Label styleClass="label-form" text="Nombre de la Empresa" />
+                        <TextField fx:id="txtNombreEmpresa" promptText="Nombre/Empresa" styleClass="input-form" />
                     </VBox>
                     
                     <VBox spacing="5.0" HBox.hgrow="ALWAYS">
-                        <Label styleClass="label-form" text="Telefono" />
-                        <TextField fx:id="txtTelefono" promptText="Telefono" styleClass="input-form" />
+                        <Label styleClass="label-form" text="Encargado (Opcional)" />
+                        <TextField fx:id="txtEncargado" promptText="Nombre del encargado" styleClass="input-form" />
                     </VBox>
 
                     <VBox spacing="5.0" HBox.hgrow="ALWAYS">
                         <Label styleClass="label-form" text="CUIT" />
                         <TextField fx:id="txtCuit" promptText="CUIT" styleClass="input-form" />
                     </VBox>
+                </children>
+            </HBox>
+
+            <!-- FILA 2 DE CAMPOS -->
+            <HBox spacing="15.0">
+                <children>
+                    <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                        <Label styleClass="label-form" text="Telefono" />
+                        <TextField fx:id="txtTelefono" promptText="Telefono" styleClass="input-form" />
+                    </VBox>
+
+                    <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                        <Label styleClass="label-form" text="Telefono Alternativo (Opc.)" />
+                        <TextField fx:id="txtTelefonoAlternativo" promptText="Telefono Secundario" styleClass="input-form" />
+                    </VBox>
 
                     <VBox spacing="5.0" HBox.hgrow="ALWAYS">
                         <Label styleClass="label-form" text="Correo Electronico" />
                         <TextField fx:id="txtCorreo" promptText="Correo Electronico" styleClass="input-form" />
                     </VBox>
-
-                    <VBox spacing="5.0" HBox.hgrow="ALWAYS">
-                        <Label styleClass="label-form" text="Detalles" />
-                        <TextField fx:id="txtDetalle" promptText="Opcional..." styleClass="input-form" />
-                    </VBox>
                 </children>
             </HBox>
 
+            <!-- BOTONES -->
             <HBox spacing="15.0">
                 <children>
                     <Button fx:id="btnGuardar" onAction="#guardarCliente" styleClass="btn-form-primario" text="Guardar" prefWidth="100.0" />
@@ -51,17 +63,19 @@
                 </children>
             </HBox>
 
+            <!-- TABLA -->
             <TableView fx:id="tblClientes" styleClass="tabla-oscura" VBox.vgrow="ALWAYS">
                 <columnResizePolicy>
                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                 </columnResizePolicy>
                 <columns>
-                    <TableColumn fx:id="colId" text="ID" prefWidth="50.0" />
-                    <TableColumn fx:id="colNombre" text="Nombre/Empresa" prefWidth="150.0" />
-                    <TableColumn fx:id="colTelefono" text="Telefono" prefWidth="120.0" />
-                    <TableColumn fx:id="colCuit" text="CUIT" prefWidth="120.0" />
+                    <TableColumn fx:id="colId" text="ID" prefWidth="40.0" />
+                    <TableColumn fx:id="colNombreEmpresa" text="Empresa" prefWidth="150.0" />
+                    <TableColumn fx:id="colEncargado" text="Encargado" prefWidth="120.0" />
+                    <TableColumn fx:id="colTelefono" text="Telefono" prefWidth="110.0" />
+                    <TableColumn fx:id="colTelefonoAlternativo" text="Tel. Alternativo" prefWidth="110.0" />
+                    <TableColumn fx:id="colCuit" text="CUIT" prefWidth="110.0" />
                     <TableColumn fx:id="colCorreo" text="Correo" prefWidth="150.0" />
-                    <TableColumn fx:id="colDetalle" text="Detalles" prefWidth="150.0" />
                 </columns>
                 <VBox.margin>
                     <Insets top="10.0" />

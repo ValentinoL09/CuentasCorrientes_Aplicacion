@@ -19,13 +19,14 @@ public class ClienteDAO {
     }
 
     public void insertar(Cliente cliente) {
-        String sql = "INSERT INTO clientes (nombre_cliente, telefono, cuit, correo, detalle) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO clientes (nombre_empresa, encargado, telefono, telefono_alternativo, cuit, correo) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, cliente.getNombreCliente());
-            stmt.setString(2, cliente.getTelefono());
-            stmt.setString(3, cliente.getCuit());
-            stmt.setString(4, cliente.getCorreo());
-            stmt.setString(5, cliente.getDetalle());
+            stmt.setString(1, cliente.getNombreEmpresa());
+            stmt.setString(2, cliente.getEncargado());
+            stmt.setString(3, cliente.getTelefono());
+            stmt.setString(4, cliente.getTelefonoAlternativo());
+            stmt.setString(5, cliente.getCuit());
+            stmt.setString(6, cliente.getCorreo());
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -40,11 +41,12 @@ public class ClienteDAO {
             while (rs.next()) {
                 Cliente cliente = new Cliente();
                 cliente.setId(rs.getInt("id"));
-                cliente.setNombreCliente(rs.getString("nombre_cliente"));
+                cliente.setNombreEmpresa(rs.getString("nombre_empresa"));
+                cliente.setEncargado(rs.getString("encargado"));
                 cliente.setTelefono(rs.getString("telefono"));
+                cliente.setTelefonoAlternativo(rs.getString("telefono_alternativo"));
                 cliente.setCuit(rs.getString("cuit"));
                 cliente.setCorreo(rs.getString("correo"));
-                cliente.setDetalle(rs.getString("detalle")); // Recuperamos el detalle
                 clientes.add(cliente);
             }
         } catch (SQLException e) {
@@ -54,14 +56,15 @@ public class ClienteDAO {
     }
 
     public void actualizar(Cliente cliente) {
-        String sql = "UPDATE clientes SET nombre_cliente = ?, telefono = ?, cuit = ?, correo = ?, detalle = ? WHERE id = ?";
+        String sql = "UPDATE clientes SET nombre_empresa = ?, encargado = ?, telefono = ?, telefono_alternativo = ?, cuit = ?, correo = ? WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, cliente.getNombreCliente());
-            stmt.setString(2, cliente.getTelefono());
-            stmt.setString(3, cliente.getCuit());
-            stmt.setString(4, cliente.getCorreo());
-            stmt.setString(5, cliente.getDetalle());
-            stmt.setInt(6, cliente.getId());
+            stmt.setString(1, cliente.getNombreEmpresa());
+            stmt.setString(2, cliente.getEncargado());
+            stmt.setString(3, cliente.getTelefono());
+            stmt.setString(4, cliente.getTelefonoAlternativo());
+            stmt.setString(5, cliente.getCuit());
+            stmt.setString(6, cliente.getCorreo());
+            stmt.setInt(7, cliente.getId());
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

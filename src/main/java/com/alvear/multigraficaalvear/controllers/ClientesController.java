@@ -17,23 +17,28 @@ import java.util.ResourceBundle;
 
 public class ClientesController implements Initializable {
 
-    @FXML private TextField txtNombre;
+    // --- CAMPOS DE TEXTO ---
+    @FXML private TextField txtNombreEmpresa;
+    @FXML private TextField txtEncargado;
     @FXML private TextField txtTelefono;
+    @FXML private TextField txtTelefonoAlternativo;
     @FXML private TextField txtCuit;
     @FXML private TextField txtCorreo;
-    @FXML private TextField txtDetalle; // Nuevo
 
+    // --- BOTONES ---
     @FXML private Button btnGuardar;
     @FXML private Button btnModificar;
     @FXML private Button btnEliminar;
 
+    // --- TABLA Y COLUMNAS ---
     @FXML private TableView<Cliente> tblClientes;
     @FXML private TableColumn<Cliente, Integer> colId;
-    @FXML private TableColumn<Cliente, String> colNombre;
+    @FXML private TableColumn<Cliente, String> colNombreEmpresa;
+    @FXML private TableColumn<Cliente, String> colEncargado;
     @FXML private TableColumn<Cliente, String> colTelefono;
+    @FXML private TableColumn<Cliente, String> colTelefonoAlternativo;
     @FXML private TableColumn<Cliente, String> colCuit;
     @FXML private TableColumn<Cliente, String> colCorreo;
-    @FXML private TableColumn<Cliente, String> colDetalle; // Nuevo
 
     private final ClienteDAO clienteDAO;
     private ObservableList<Cliente> listaClientes;
@@ -44,23 +49,26 @@ public class ClientesController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Usamos Lambdas para evitar el bloqueo de JavaFX
+        // Enlazamos las columnas con los nuevos atributos del modelo
         colId.setCellValueFactory(cellData -> new javafx.beans.property.SimpleObjectProperty<>(cellData.getValue().getId()));
-        colNombre.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getNombreCliente()));
+        colNombreEmpresa.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getNombreEmpresa()));
+        colEncargado.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getEncargado()));
         colTelefono.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getTelefono()));
+        colTelefonoAlternativo.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getTelefonoAlternativo()));
         colCuit.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getCuit()));
         colCorreo.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getCorreo()));
-        colDetalle.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getDetalle()));
 
         cargarTabla();
 
+        // Escuchador para cuando hacen clic en la tabla
         tblClientes.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
-                txtNombre.setText(newSelection.getNombreCliente());
+                txtNombreEmpresa.setText(newSelection.getNombreEmpresa());
+                txtEncargado.setText(newSelection.getEncargado() != null ? newSelection.getEncargado() : "");
                 txtTelefono.setText(newSelection.getTelefono());
+                txtTelefonoAlternativo.setText(newSelection.getTelefonoAlternativo() != null ? newSelection.getTelefonoAlternativo() : "");
                 txtCuit.setText(newSelection.getCuit());
                 txtCorreo.setText(newSelection.getCorreo());
-                txtDetalle.setText(newSelection.getDetalle());
             }
         });
     }
@@ -72,12 +80,19 @@ public class ClientesController implements Initializable {
 
     @FXML
     private void guardarCliente() {
+        // VALIDACIÓN: Obligamos a que pongan el nombre de la empresa
+        if (txtNombreEmpresa.getText().trim().isEmpty()) {
+            mostrarAlerta("El Nombre de la Empresa es obligatorio.");
+            return; // Corta la ejecución acá, no guarda nada
+        }
+
         Cliente cliente = new Cliente();
-        cliente.setNombreCliente(txtNombre.getText());
-        cliente.setTelefono(txtTelefono.getText());
-        cliente.setCuit(txtCuit.getText());
-        cliente.setCorreo(txtCorreo.getText());
-        cliente.setDetalle(txtDetalle.getText());
+        cliente.setNombreEmpresa(txtNombreEmpresa.getText().trim());
+        cliente.setEncargado(txtEncargado.getText().trim());
+        cliente.setTelefono(txtTelefono.getText().trim());
+        cliente.setTelefonoAlternativo(txtTelefonoAlternativo.getText().trim());
+        cliente.setCuit(txtCuit.getText().trim());
+        cliente.setCorreo(txtCorreo.getText().trim());
 
         clienteDAO.insertar(cliente);
         limpiarCampos();
@@ -89,11 +104,19 @@ public class ClientesController implements Initializable {
     private void modificarCliente() {
         Cliente clienteSeleccionado = tblClientes.getSelectionModel().getSelectedItem();
         if (clienteSeleccionado != null) {
-            clienteSeleccionado.setNombreCliente(txtNombre.getText());
-            clienteSeleccionado.setTelefono(txtTelefono.getText());
-            clienteSeleccionado.setCuit(txtCuit.getText());
-            clienteSeleccionado.setCorreo(txtCorreo.getText());
-            clienteSeleccionado.setDetalle(txtDetalle.getText());
+            
+            // VALIDACIÓN también al modificar
+            if (txtNombreEmpresa.getText().trim().isEmpty()) {
+                mostrarAlerta("El Nombre de la Empresa no puede estar vacío.");
+                return;
+            }
+
+            clienteSeleccionado.setNombreEmpresa(txtNombreEmpresa.getText().trim());
+            clienteSeleccionado.setEncargado(txtEncargado.getText().trim());
+            clienteSeleccionado.setTelefono(txtTelefono.getText().trim());
+            clienteSeleccionado.setTelefonoAlternativo(txtTelefonoAlternativo.getText().trim());
+            clienteSeleccionado.setCuit(txtCuit.getText().trim());
+            clienteSeleccionado.setCorreo(txtCorreo.getText().trim());
 
             clienteDAO.actualizar(clienteSeleccionado);
             limpiarCampos();
@@ -118,11 +141,12 @@ public class ClientesController implements Initializable {
     }
 
     private void limpiarCampos() {
-        txtNombre.clear();
+        txtNombreEmpresa.clear();
+        txtEncargado.clear();
         txtTelefono.clear();
+        txtTelefonoAlternativo.clear();
         txtCuit.clear();
         txtCorreo.clear();
-        txtDetalle.clear();
         tblClientes.getSelectionModel().clearSelection();
     }
 
