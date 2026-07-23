@@ -10,8 +10,10 @@ import javafx.scene.layout.VBox;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
-import com.alvear.multigraficaalvear.utils.FormatoUtil;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 
+import com.alvear.multigraficaalvear.utils.FormatoUtil;
 import com.alvear.multigraficaalvear.daos.*;
 import com.alvear.multigraficaalvear.models.*;
 
@@ -31,6 +33,7 @@ public class VentasController implements Initializable {
     @FXML private TextField txtDetalle; 
     @FXML private TextField txtMontoRecibido;
     @FXML private Label lblTotal;
+    @FXML private DatePicker dpFechaVenta;
     
     @FXML private TableView<DetalleVenta> tblCarrito;
     @FXML private TableColumn<DetalleVenta, String> colServicio;
@@ -94,13 +97,25 @@ public class VentasController implements Initializable {
         colDetHistPrecio.setCellValueFactory(cell -> new javafx.beans.property.SimpleObjectProperty<>(cell.getValue().getPrecioUnitario()));
         colDetHistSub.setCellValueFactory(cell -> new javafx.beans.property.SimpleObjectProperty<>(cell.getValue().getSubtotal()));
 
+        // --- APLICAMOS EL FORMATO DE DINERO A LAS COLUMNAS ---
+        configurarColumnaDinero(colPrecioUnitario);
+        configurarColumnaDinero(colSubtotal);
+        configurarColumnaDinero(colHistTotal);
+        configurarColumnaDinero(colDetHistPrecio);
+        configurarColumnaDinero(colDetHistSub);
+
         cargarClientes();
         cargarServicios();
         cargarHistorial();
 
+        dpFechaVenta.setValue(LocalDate.now());
+
         FormatoUtil.aplicarFormatoNumerico(txtCantidad);
         FormatoUtil.aplicarFormatoNumerico(txtPrecio);
         FormatoUtil.aplicarFormatoNumerico(txtMontoRecibido);
+        
+        // Aplicamos la mayúscula inicial al campo de detalle de la venta
+        FormatoUtil.aplicarFormatoMayusculas(txtDetalle);
 
         // ACÁ ESCUCHAMOS LOS CLICS EN EL HISTORIAL PARA LLENAR LA TABLA SECUNDARIA
         tblHistorial.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, newSel) -> {
@@ -123,7 +138,6 @@ public class VentasController implements Initializable {
         panelHistorial.setVisible(false);
         panelHistorial.setManaged(false);
 
-        // Pintamos de morado el botón activo y de gris el inactivo
         btnNavNuevaVenta.getStyleClass().remove("btn-form-secundario");
         if (!btnNavNuevaVenta.getStyleClass().contains("btn-form-primario")) {
             btnNavNuevaVenta.getStyleClass().add("btn-form-primario");
@@ -143,7 +157,6 @@ public class VentasController implements Initializable {
         panelHistorial.setManaged(true);
         cargarHistorial(); // Refrescamos por si hubo ventas nuevas
 
-        // Invertimos los colores: Historial pasa a morado, Nueva Venta a gris
         btnNavHistorial.getStyleClass().remove("btn-form-secundario");
         if (!btnNavHistorial.getStyleClass().contains("btn-form-primario")) {
             btnNavHistorial.getStyleClass().add("btn-form-primario");
@@ -162,9 +175,34 @@ public class VentasController implements Initializable {
 
     private void cargarServicios() {
         cmbServicios.setItems(FXCollections.observableArrayList(servicioDAO.listarTodos()));
+        
+        // Cambiamos cómo se ve cada elemento desplegado en la lista
+        cmbServicios.setCellFactory(param -> new ListCell<Servicio>() {
+            @Override
+            protected void updateItem(Servicio servicio, boolean empty) {
+                super.updateItem(servicio, empty);
+                if (empty || servicio == null) {
+                    setText(null);
+                } else {
+                    setText(servicio.getNombre() + " (" + servicio.getCategoria() + ")");
+                }
+            }
+        });
+
+        // Cambiamos cómo se ve el elemento seleccionado una vez elegido
+        cmbServicios.setConverter(new javafx.util.StringConverter<Servicio>() {
+            @Override
+            public String toString(Servicio servicio) {
+                return servicio == null ? "" : servicio.getNombre() + " (" + servicio.getCategoria() + ")";
+            }
+            @Override
+            public Servicio fromString(String string) {
+                return null;
+            }
+        });
+
         cmbServicios.setOnAction(e -> {
             Servicio s = cmbServicios.getValue();
-            // Le agregamos el (long) al precio sugerido
             if (s != null) txtPrecio.setText(String.valueOf((long) s.getPrecioSugerido()));
         });
     }
@@ -190,7 +228,6 @@ public class VentasController implements Initializable {
         if (s == null) { mostrarAlerta("Seleccione un servicio.", Alert.AlertType.WARNING); return; }
 
         try {
-            // USAMOS LA HERRAMIENTA PARA OBTENER LOS VALORES LIMPIOS
             int cantidad = (int) FormatoUtil.obtenerValor(txtCantidad);
             double precio = FormatoUtil.obtenerValor(txtPrecio);
 
@@ -213,7 +250,12 @@ public class VentasController implements Initializable {
 
     private void actualizarTotal() {
         double total = carrito.stream().mapToDouble(d -> d.getCantidad() * d.getPrecioUnitario()).sum();
-        lblTotal.setText("Total: $" + String.format("%.2f", total));
+        
+        // Formateamos también el texto del Total con puntos
+        DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
+        simbolos.setGroupingSeparator('.');
+        DecimalFormat formato = new DecimalFormat("#,###", simbolos);
+        lblTotal.setText("Total: $" + formato.format(total));
     }
 
     @FXML
@@ -225,7 +267,7 @@ public class VentasController implements Initializable {
         cmbCliente.getSelectionModel().clearSelection();
         cmbServicios.getSelectionModel().clearSelection();
         carrito.clear();
-        lblTotal.setText("Total: $0.00");
+        lblTotal.setText("Total: $0");
     }
 
     @FXML
@@ -244,7 +286,6 @@ public class VentasController implements Initializable {
         
         if (!txtMontoRecibido.getText().trim().isEmpty()) {
             try {
-                // USAMOS LA HERRAMIENTA PARA LIMPIAR EL MONTO ANTES DE GUARDAR EL PAGO
                 montoRecibido = FormatoUtil.obtenerValor(txtMontoRecibido);
             } catch (NumberFormatException e) {
                 mostrarAlerta("El monto recibido debe ser un número.", Alert.AlertType.WARNING);
@@ -252,12 +293,14 @@ public class VentasController implements Initializable {
             }
         }
 
+        LocalDate fechaSeleccionada = dpFechaVenta.getValue() != null ? dpFechaVenta.getValue() : LocalDate.now();
+
         Venta v = new Venta();
         v.setClienteId(cmbCliente.getValue().getId());
         v.setDescripcion("Venta de " + carrito.size() + " items");
         v.setMontoTotal(total);
         v.setMontoRecibido(montoRecibido);
-        v.setFecha(LocalDate.now());
+        v.setFecha(fechaSeleccionada);
         v.setDetalle(txtDetalle.getText());
 
         int idVenta = ventaDAO.insertar(v);
@@ -272,7 +315,7 @@ public class VentasController implements Initializable {
         }
 
         if (montoRecibido > 0) {
-            Pago p = new Pago(idVenta, montoRecibido, LocalDate.now());
+            Pago p = new Pago(idVenta, montoRecibido, fechaSeleccionada);
             pagoDAO.insertar(p);
         }
 
@@ -286,5 +329,23 @@ public class VentasController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
         alert.showAndWait();
+    }
+
+    // --- MÉTODOS DE AYUDA (Fábrica de celdas visuales) ---
+    private <T> void configurarColumnaDinero(TableColumn<T, Double> columna) {
+        columna.setCellFactory(col -> new TableCell<T, Double>() {
+            @Override
+            protected void updateItem(Double item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
+                    simbolos.setGroupingSeparator('.');
+                    DecimalFormat formato = new DecimalFormat("#,###", simbolos);
+                    setText("$ " + formato.format(item));
+                }
+            }
+        });
     }
 }

@@ -8,15 +8,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ResourceBundle;
 
 public class ServiciosController implements Initializable {
@@ -35,7 +32,7 @@ public class ServiciosController implements Initializable {
     @FXML private TableColumn<Servicio, String> colNombre;
     @FXML private TableColumn<Servicio, String> colCategoria;
     @FXML private TableColumn<Servicio, Double> colPrecio;
-    @FXML private TableColumn<Servicio, String> colDetalle;
+    // Ya no declaramos colDetalle acá para limpiar definitivamente ese dato
 
     private final ServicioDAO servicioDAO;
     private ObservableList<Servicio> listaServicios;
@@ -51,6 +48,9 @@ public class ServiciosController implements Initializable {
         colCategoria.setCellValueFactory(new PropertyValueFactory<>("categoria"));
         colPrecio.setCellValueFactory(new PropertyValueFactory<>("precioSugerido"));
 
+        // 1. Aplicamos el formato de dinero (con puntos) a la columna de la tabla
+        configurarColumnaDinero(colPrecio);
+
         cargarTabla();
 
         tblServicios.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
@@ -60,7 +60,13 @@ public class ServiciosController implements Initializable {
                 txtPrecioSugerido.setText(String.valueOf((long) newSelection.getPrecioSugerido()));
             }
         });
+        
+        // Formato numérico mientras se escribe en el TextField
         FormatoUtil.aplicarFormatoNumerico(txtPrecioSugerido); 
+
+        // 2. Aplicamos formato de mayúsculas automáticas
+        FormatoUtil.aplicarFormatoMayusculas(txtNombre);
+        FormatoUtil.aplicarFormatoMayusculas(txtCategoria);
     }
 
     private void cargarTabla() {
@@ -137,5 +143,23 @@ public class ServiciosController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
         alert.showAndWait();
+    }
+
+    // --- MÉTODOS DE AYUDA (Fábrica de celdas visuales) ---
+    private <T> void configurarColumnaDinero(TableColumn<T, Double> columna) {
+        columna.setCellFactory(col -> new TableCell<T, Double>() {
+            @Override
+            protected void updateItem(Double item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
+                    simbolos.setGroupingSeparator('.');
+                    DecimalFormat formato = new DecimalFormat("#,###", simbolos);
+                    setText("$ " + formato.format(item));
+                }
+            }
+        });
     }
 }

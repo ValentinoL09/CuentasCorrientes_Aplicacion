@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.DatePicker?>
 
 <VBox styleClass="fondo-pestana" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.alvear.multigraficaalvear.controllers.VentasController" spacing="15.0">
     
@@ -75,6 +76,7 @@
                     <Label fx:id="lblTotal" text="Total: $0.00" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: white;" />
                     <HBox spacing="10.0">
                         <Button onAction="#limpiarFormulario" text="Limpiar" prefHeight="38.0" style="-fx-background-color: transparent; -fx-text-fill: #aaa; -fx-border-color: #555; -fx-border-radius: 5;"/>
+                        <DatePicker fx:id="dpFechaVenta" promptText="Seleccionar fecha" styleClass="input-form" />
                         <Button onAction="#finalizarVenta" text="Finalizar Venta" prefHeight="38.0" styleClass="btn-form-primario"/>
                     </HBox>
                 </VBox>

@@ -2,6 +2,8 @@ package com.alvear.multigraficaalvear.controllers;
 
 import com.alvear.multigraficaalvear.daos.ClienteDAO;
 import com.alvear.multigraficaalvear.models.Cliente;
+import com.alvear.multigraficaalvear.utils.FormatoUtil;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -59,6 +61,9 @@ public class ClientesController implements Initializable {
         colCorreo.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getCorreo()));
 
         cargarTabla();
+
+        FormatoUtil.aplicarFormatoMayusculas(txtNombreEmpresa);
+        FormatoUtil.aplicarFormatoMayusculas(txtEncargado);
 
         // Escuchador para cuando hacen clic en la tabla
         tblClientes.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
